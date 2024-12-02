@@ -35,6 +35,7 @@ namespace Bookify.Controllers
             {
                 _Db.categories.Add(category);
                 _Db.SaveChanges();
+                TempData["success"] = "Category created successfully.";
             return RedirectToAction("Index");
             }
             return View();    
@@ -54,6 +55,7 @@ namespace Bookify.Controllers
             return View(category);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
             var categoryToDelete = _Db.categories.FirstOrDefault(u=>u.Id==id);
@@ -65,8 +67,10 @@ namespace Bookify.Controllers
             {
                 _Db.categories.Remove(categoryToDelete);
                 _Db.SaveChanges();
+                TempData["success"] = "Category deleted successfully.";
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            return View();
         }
 
         
@@ -94,10 +98,11 @@ namespace Bookify.Controllers
             {
                 _Db.categories.Update(category);
                 _Db.SaveChanges();
+                TempData["success"] = "Category updated successfully.";
                 return RedirectToAction("Index");
             }
 
-            return View(category);
+            return View();
         }
 
     }
