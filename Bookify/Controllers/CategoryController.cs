@@ -1,5 +1,6 @@
 ﻿using Bookify.Database;
 using Bookify.Models;
+using Bookify.Repositary;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookify.Controllers
@@ -7,15 +8,16 @@ namespace Bookify.Controllers
     public class CategoryController : Controller
     {
         private readonly ApplicationDbContext _Db;
-
-        public CategoryController(ApplicationDbContext db)
+         private ICategory _ICategory;
+        public CategoryController(ApplicationDbContext db, ICategory category)
         {
             _Db = db;
+            _ICategory = category;
         }
         public IActionResult Index()
         {
          
-            List<Category> categories= _Db.categories.ToList();
+            List<Category> categories= _ICategory.GetAll().ToList();
             return View(categories);    
         }
 
@@ -33,8 +35,8 @@ namespace Bookify.Controllers
             }
             if (ModelState.IsValid)
             {
-                _Db.categories.Add(category);
-                _Db.SaveChanges();
+                _ICategory.Add(category);
+                _ICategory.Save();
                 TempData["success"] = "Category created successfully.";
             return RedirectToAction("Index");
             }
@@ -47,7 +49,7 @@ namespace Bookify.Controllers
             if(id== 0 || id == null) {
                 return NotFound();
             }
-            Category? category = _Db.categories.FirstOrDefault(u => u.Id == id);
+            Category? category = _ICategory.Get(u => u.Id == id);
             if(category == null)
             {
                 return NotFound();
@@ -58,15 +60,15 @@ namespace Bookify.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
-            var categoryToDelete = _Db.categories.FirstOrDefault(u=>u.Id==id);
+            var categoryToDelete =   _ICategory.Get(u=>u.Id==id);
             if(categoryToDelete == null)
             {
                 return NotFound();
             }
             if (ModelState.IsValid)
             {
-                _Db.categories.Remove(categoryToDelete);
-                _Db.SaveChanges();
+               _ICategory.Remove(categoryToDelete);
+                _ICategory.Save();
                 TempData["success"] = "Category deleted successfully.";
                 return RedirectToAction("Index");
             }
@@ -81,7 +83,7 @@ namespace Bookify.Controllers
                 return NotFound();
             }
 
-            var CategoryToEdit = _Db.categories.FirstOrDefault(u => u.Id == id);
+            var CategoryToEdit =  _ICategory.Get(u => u.Id == id);
             if (CategoryToEdit == null)
             {
                 return NotFound();
@@ -96,7 +98,7 @@ namespace Bookify.Controllers
         {
             if (ModelState.IsValid)
             {
-                _Db.categories.Update(category);
+                 _ICategory.update(category);
                 _Db.SaveChanges();
                 TempData["success"] = "Category updated successfully.";
                 return RedirectToAction("Index");
