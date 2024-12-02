@@ -11,7 +11,8 @@
 <body>
     <div class="container my-5">
         <h2 class="mb-4">Create New Category</h2>
-        <form method="post" asp-controller="Category" asp-action="Create">
+        <form method="post" asp-controller="Category" asp-action="Edit">
+            <input asp-for="Id" hidden />
             <div class="mb-3">
                 <label class="form-label">Category Name</label>
                 <input type="text" class="form-control" id="Name" name="Name" placeholder="Enter category name" asp-for="Name" required>
@@ -20,7 +21,7 @@
                 <label class="form-label">Display Order</label>
                 <input type="number" asp-for="DisplayOrder" class="form-control" id="DisplayOrder" name="DisplayOrder" placeholder="Enter display order" required>
             </div>
-            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="submit" class="btn btn-primary">Edit</button>
             <a href="@Url.Action("Index", "Category")" class="btn btn-secondary">Cancel</a>
         </form>
     </div>

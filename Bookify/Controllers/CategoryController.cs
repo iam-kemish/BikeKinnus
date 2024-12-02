@@ -24,7 +24,7 @@ namespace Bookify.Controllers
             return View();
         }
         [HttpPost]
-
+        [ValidateAntiForgeryToken]
         public IActionResult Create(Category category)
         {
             if(category.Name.ToLower() == category.DisplayOrder.ToString())
@@ -35,15 +35,70 @@ namespace Bookify.Controllers
             {
                 _Db.categories.Add(category);
                 _Db.SaveChanges();
+            return RedirectToAction("Index");
+            }
+            return View();    
+        }
+
+     
+        public IActionResult Delete(int?  id)
+        {
+            if(id== 0 || id == null) {
+                return NotFound();
+            }
+            Category? category = _Db.categories.FirstOrDefault(u => u.Id == id);
+            if(category == null)
+            {
+                return NotFound();
+            }
+            return View(category);
+        }
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            var categoryToDelete = _Db.categories.FirstOrDefault(u=>u.Id==id);
+            if(categoryToDelete == null)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                _Db.categories.Remove(categoryToDelete);
+                _Db.SaveChanges();
             }
             return RedirectToAction("Index");
-             
         }
 
-
-        public IActionResult Delete()
+        
+        public IActionResult Edit(int? id)
         {
-            return View();
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var CategoryToEdit = _Db.categories.FirstOrDefault(u => u.Id == id);
+            if (CategoryToEdit == null)
+            {
+                return NotFound();
+            }
+
+            return View(CategoryToEdit);
         }
+
+        [HttpPost] 
+        [ValidateAntiForgeryToken] 
+        public IActionResult Edit(Category category)
+        {
+            if (ModelState.IsValid)
+            {
+                _Db.categories.Update(category);
+                _Db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(category);
+        }
+
     }
 }
