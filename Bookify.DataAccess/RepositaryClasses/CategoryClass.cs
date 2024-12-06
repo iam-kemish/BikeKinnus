@@ -1,5 +1,5 @@
 ﻿using Bookify.Database;
-using Bookify.Models;
+using Bookify.Models.Models;
 using Bookify.Repositary;
 using System.Linq.Expressions;
 
@@ -18,7 +18,7 @@ namespace Bookify.RepositaryClasses
            _db.SaveChanges();
         }
 
-        public void update(Category category)
+        public void Update(Category category)
         {
             _db.categories.Update(category);
         }

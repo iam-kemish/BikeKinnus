@@ -1,4 +1,4 @@
-﻿using Bookify.Models;
+﻿using Bookify.Models.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bookify.Database

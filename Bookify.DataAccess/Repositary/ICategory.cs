@@ -1,10 +1,10 @@
-﻿using Bookify.Models;
+﻿using Bookify.Models.Models;
 
 namespace Bookify.Repositary
 {
     public interface ICategory:IRepositary<Category>
     {
-        void update(Category category);
+        void Update(Category category);
         void Save();
     }
 }

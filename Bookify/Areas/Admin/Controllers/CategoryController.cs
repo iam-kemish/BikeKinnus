@@ -1,14 +1,14 @@
 ﻿using Bookify.Database;
-using Bookify.Models;
+using Bookify.Models.Models;
 using Bookify.Repositary;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Bookify.Controllers
+namespace Bookify.Areas.Admin.Controllers
 {
     public class CategoryController : Controller
     {
         private readonly ApplicationDbContext _Db;
-         private ICategory _ICategory;
+        private ICategory _ICategory;
         public CategoryController(ApplicationDbContext db, ICategory category)
         {
             _Db = db;
@@ -16,9 +16,9 @@ namespace Bookify.Controllers
         }
         public IActionResult Index()
         {
-         
-            List<Category> categories= _ICategory.GetAll().ToList();
-            return View(categories);    
+
+            List<Category> categories = _ICategory.GetAll().ToList();
+            return View(categories);
         }
 
         public IActionResult Create()
@@ -29,7 +29,7 @@ namespace Bookify.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Category category)
         {
-            if(category.Name.ToLower() == category.DisplayOrder.ToString())
+            if (category.Name.ToLower() == category.DisplayOrder.ToString())
             {
                 ModelState.AddModelError("Invalid", "Name cannot exactly match with order.");
             }
@@ -38,19 +38,20 @@ namespace Bookify.Controllers
                 _ICategory.Add(category);
                 _ICategory.Save();
                 TempData["success"] = "Category created successfully.";
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
-            return View();    
+            return View();
         }
 
-     
-        public IActionResult Delete(int?  id)
+
+        public IActionResult Delete(int? id)
         {
-            if(id== 0 || id == null) {
+            if (id == 0 || id == null)
+            {
                 return NotFound();
             }
             Category? category = _ICategory.Get(u => u.Id == id);
-            if(category == null)
+            if (category == null)
             {
                 return NotFound();
             }
@@ -60,14 +61,14 @@ namespace Bookify.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
-            var categoryToDelete =   _ICategory.Get(u=>u.Id==id);
-            if(categoryToDelete == null)
+            var categoryToDelete = _ICategory.Get(u => u.Id == id);
+            if (categoryToDelete == null)
             {
                 return NotFound();
             }
             if (ModelState.IsValid)
             {
-               _ICategory.Remove(categoryToDelete);
+                _ICategory.Remove(categoryToDelete);
                 _ICategory.Save();
                 TempData["success"] = "Category deleted successfully.";
                 return RedirectToAction("Index");
@@ -75,7 +76,7 @@ namespace Bookify.Controllers
             return View();
         }
 
-        
+
         public IActionResult Edit(int? id)
         {
             if (id == null || id == 0)
@@ -83,7 +84,7 @@ namespace Bookify.Controllers
                 return NotFound();
             }
 
-            var CategoryToEdit =  _ICategory.Get(u => u.Id == id);
+            var CategoryToEdit = _ICategory.Get(u => u.Id == id);
             if (CategoryToEdit == null)
             {
                 return NotFound();
@@ -92,13 +93,13 @@ namespace Bookify.Controllers
             return View(CategoryToEdit);
         }
 
-        [HttpPost] 
-        [ValidateAntiForgeryToken] 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit(Category category)
         {
             if (ModelState.IsValid)
             {
-                 _ICategory.update(category);
+                _ICategory.Update(category);
                 _Db.SaveChanges();
                 TempData["success"] = "Category updated successfully.";
                 return RedirectToAction("Index");

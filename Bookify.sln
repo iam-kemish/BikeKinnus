@@ -5,9 +5,9 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookify", "Bookify\Bookify.csproj", "{F5DA142C-42B9-4279-9381-957DD00172D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bookify.DataAccess", "Bookify.DataAccess\Bookify.DataAccess.csproj", "{4E76102C-A8C4-4BCB-AEA7-2FFF0CBC48C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookify.DataAccess", "Bookify.DataAccess\Bookify.DataAccess.csproj", "{4E76102C-A8C4-4BCB-AEA7-2FFF0CBC48C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bookify.Models", "Bookify.Models\Bookify.Models.csproj", "{52079585-0912-4EE0-A619-433C871967B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookify.Models", "Bookify.Models\Bookify.Models.csproj", "{52079585-0912-4EE0-A619-433C871967B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
