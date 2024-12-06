@@ -1,4 +1,5 @@
-﻿using Bookify.Database;
+﻿using Bookify.DataAccess.Repositary;
+using Bookify.Database;
 using Bookify.Models.Models;
 using Bookify.Repositary;
 using Microsoft.AspNetCore.Mvc;
@@ -6,19 +7,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace Bookify.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CategoryController : Controller
+    public class ProductController : Controller
     {
         private readonly ApplicationDbContext _Db;
-        private ICategory _ICategory;
-        public CategoryController(ApplicationDbContext db, ICategory category)
+        private IProduct _IProduct;
+        public ProductController(ApplicationDbContext db, IProduct product)
         {
             _Db = db;
-            _ICategory = category;
+            _IProduct = product;
         }
         public IActionResult Index()
         {
 
-            List<Category> categories = _ICategory.GetAll().ToList();
+            List<Product> categories = _IProduct.GetAll().ToList();
             return View(categories);
         }
 
@@ -28,17 +29,14 @@ namespace Bookify.Areas.Admin.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Category category)
+        public IActionResult Create(Product product)
         {
-            if (category.Name.ToLower() == category.DisplayOrder.ToString())
-            {
-                ModelState.AddModelError("Invalid", "Name cannot exactly match with order.");
-            }
+           
             if (ModelState.IsValid)
             {
-                _ICategory.Add(category);
-                _ICategory.Save();
-                TempData["success"] = "Category created successfully.";
+                _IProduct.Add(product);
+                _IProduct.Save();
+                TempData["success"] = "Product created successfully.";
                 return RedirectToAction("Index");
             }
             return View();
@@ -51,27 +49,27 @@ namespace Bookify.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            Category? category = _ICategory.Get(u => u.Id == id);
-            if (category == null)
+            Product? product = _IProduct.Get(u => u.Id == id);
+            if (product == null)
             {
                 return NotFound();
             }
-            return View(category);
+            return View(product);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
-            var categoryToDelete = _ICategory.Get(u => u.Id == id);
-            if (categoryToDelete == null)
+            var productToDelete = _IProduct.Get(u => u.Id == id);
+            if (productToDelete == null)
             {
                 return NotFound();
             }
             if (ModelState.IsValid)
             {
-                _ICategory.Remove(categoryToDelete);
-                _ICategory.Save();
-                TempData["success"] = "Category deleted successfully.";
+                _IProduct.Remove(productToDelete);
+                _IProduct.Save();
+                TempData["success"] = "Product deleted successfully.";
                 return RedirectToAction("Index");
             }
             return View();
@@ -85,24 +83,24 @@ namespace Bookify.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var CategoryToEdit = _ICategory.Get(u => u.Id == id);
-            if (CategoryToEdit == null)
+            var ProductToEdit = _IProduct.Get(u => u.Id == id);
+            if (ProductToEdit == null)
             {
                 return NotFound();
             }
 
-            return View(CategoryToEdit);
+            return View(ProductToEdit);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Category category)
+        public IActionResult Edit(Product product)
         {
             if (ModelState.IsValid)
             {
-                _ICategory.Update(category);
+                _IProduct.Update(product);
                 _Db.SaveChanges();
-                TempData["success"] = "Category updated successfully.";
+                TempData["success"] = "Product updated successfully.";
                 return RedirectToAction("Index");
             }
 
