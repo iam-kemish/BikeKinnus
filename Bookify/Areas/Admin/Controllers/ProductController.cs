@@ -1,8 +1,10 @@
 ﻿using Bookify.DataAccess.Repositary;
 using Bookify.Database;
 using Bookify.Models.Models;
+using Bookify.Models.Models.ViewModels;
 using Bookify.Repositary;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Bookify.Areas.Admin.Controllers
 {
@@ -11,30 +13,43 @@ namespace Bookify.Areas.Admin.Controllers
     {
         private readonly ApplicationDbContext _Db;
         private IProduct _IProduct;
-        public ProductController(ApplicationDbContext db, IProduct product)
+        private ICategory _ICategory;
+        public ProductController(ApplicationDbContext db, IProduct product, ICategory iCategory)
         {
             _Db = db;
             _IProduct = product;
+            _ICategory = iCategory;
         }
         public IActionResult Index()
         {
 
-            List<Product> categories = _IProduct.GetAll().ToList();
-            return View(categories);
+            List<Product> products = _IProduct.GetAll().ToList();
+          
+            return View(products);
         }
 
         public IActionResult Create()
         {
-            return View();
+            IEnumerable<SelectListItem> AllCategories = _ICategory.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id.ToString()
+            });
+            ProductVM productVM = new()
+            {
+                ProductList = AllCategories,
+                Product = new Product()
+            };
+            return View(productVM);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Product product)
+        public IActionResult Create(ProductVM productvm)
         {
            
             if (ModelState.IsValid)
             {
-                _IProduct.Add(product);
+                _IProduct.Add(productvm.Product);
                 _IProduct.Save();
                 TempData["success"] = "Product created successfully.";
                 return RedirectToAction("Index");

@@ -15,8 +15,12 @@ namespace Bookify.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Category>().HasData(
-                new Category { Id = 1, DisplayOrder = 3, Name = "Servil Liyoken" },
-                new Category { Id=2, DisplayOrder=2, Name="Aenold"}
+                 new Category { Id = 1, DisplayOrder = 3, Name = "Servil Liyoken" },
+    new Category { Id = 2, DisplayOrder = 2, Name = "Aenold" },
+    new Category { Id = 3, DisplayOrder = 1, Name = "Mystery" },
+    new Category { Id = 4, DisplayOrder = 4, Name = "Romance" },
+    new Category { Id = 5, DisplayOrder = 5, Name = "Adventure" },
+    new Category { Id = 6, DisplayOrder = 6, Name = "Nature" }
                 );
 
             modelBuilder.Entity<Product>().HasData(
@@ -31,7 +35,8 @@ namespace Bookify.Database
                    Price = 90,
                    Price50 = 85,
                    Price100 = 80,
-                  
+                  CategoryId = 1,
+                  ImageUrl=""
                },
                new Product
                {
@@ -44,7 +49,9 @@ namespace Bookify.Database
                    Price = 30,
                    Price50 = 25,
                    Price100 = 20,
-                
+                   CategoryId = 2,
+                   ImageUrl = ""
+
                },
                new Product
                {
@@ -57,7 +64,8 @@ namespace Bookify.Database
                    Price = 50,
                    Price50 = 40,
                    Price100 = 35,
-                   
+                   CategoryId = 3,
+                   ImageUrl = ""
                },
                new Product
                {
@@ -70,7 +78,8 @@ namespace Bookify.Database
                    Price = 65,
                    Price50 = 60,
                    Price100 = 55,
-                
+                   CategoryId = 4,
+                   ImageUrl = ""
                },
                new Product
                {
@@ -83,7 +92,8 @@ namespace Bookify.Database
                    Price = 27,
                    Price50 = 25,
                    Price100 = 20,
-                  
+                   CategoryId = 5,
+                   ImageUrl = ""
                },
                new Product
                {
@@ -96,7 +106,9 @@ namespace Bookify.Database
                    Price = 23,
                    Price50 = 22,
                    Price100 = 20,
-                                }
+                   CategoryId = 6,
+                   ImageUrl = ""
+               }
                );
         }
     }

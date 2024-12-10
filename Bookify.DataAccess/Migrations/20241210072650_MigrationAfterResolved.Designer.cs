@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bookify.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241206071638_ProductTableAdded")]
-    partial class ProductTableAdded
+    [Migration("20241210072650_MigrationAfterResolved")]
+    partial class MigrationAfterResolved
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace Bookify.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Bookify.Models.Category", b =>
+            modelBuilder.Entity("Bookify.Models.Models.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,10 +56,34 @@ namespace Bookify.DataAccess.Migrations
                             Id = 2,
                             DisplayOrder = 2,
                             Name = "Aenold"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DisplayOrder = 1,
+                            Name = "Mystery"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            DisplayOrder = 4,
+                            Name = "Romance"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            DisplayOrder = 5,
+                            Name = "Adventure"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            DisplayOrder = 6,
+                            Name = "Nature"
                         });
                 });
 
-            modelBuilder.Entity("Bookify.Models.Product", b =>
+            modelBuilder.Entity("Bookify.Models.Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -71,8 +95,10 @@ namespace Bookify.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ISBN")
@@ -97,6 +123,8 @@ namespace Bookify.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("products");
 
                     b.HasData(
@@ -104,6 +132,7 @@ namespace Bookify.DataAccess.Migrations
                         {
                             Id = 1,
                             Author = "Billy Spark",
+                            CategoryId = 1,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "SWD9999001",
                             ListPrice = 99.0,
@@ -116,6 +145,7 @@ namespace Bookify.DataAccess.Migrations
                         {
                             Id = 2,
                             Author = "Nancy Hoover",
+                            CategoryId = 2,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "CAW777777701",
                             ListPrice = 40.0,
@@ -128,6 +158,7 @@ namespace Bookify.DataAccess.Migrations
                         {
                             Id = 3,
                             Author = "Julian Button",
+                            CategoryId = 3,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "RITO5555501",
                             ListPrice = 55.0,
@@ -140,6 +171,7 @@ namespace Bookify.DataAccess.Migrations
                         {
                             Id = 4,
                             Author = "Abby Muscles",
+                            CategoryId = 4,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "WS3333333301",
                             ListPrice = 70.0,
@@ -152,6 +184,7 @@ namespace Bookify.DataAccess.Migrations
                         {
                             Id = 5,
                             Author = "Ron Parker",
+                            CategoryId = 5,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "SOTJ1111111101",
                             ListPrice = 30.0,
@@ -164,6 +197,7 @@ namespace Bookify.DataAccess.Migrations
                         {
                             Id = 6,
                             Author = "Laura Phantom",
+                            CategoryId = 6,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "FOT000000001",
                             ListPrice = 25.0,
@@ -172,6 +206,17 @@ namespace Bookify.DataAccess.Migrations
                             Price50 = 22.0,
                             Title = "Leaves and Wonders"
                         });
+                });
+
+            modelBuilder.Entity("Bookify.Models.Models.Product", b =>
+                {
+                    b.HasOne("Bookify.Models.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }
