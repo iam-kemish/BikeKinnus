@@ -13,6 +13,7 @@ namespace Bookify.RepositaryClasses
         
         _Db = Db;
         this.DbSet = _Db.Set<T>();
+         _Db.products.Include(u => u.Category);
         }
        
         public void Add(T item)
@@ -20,16 +21,30 @@ namespace Bookify.RepositaryClasses
            DbSet.Add(item);
         }
 
-        public T Get(Expression<Func<T, bool>> func)
+        public T Get(Expression<Func<T, bool>> func, string? includeProperties = null)
         {
             IQueryable<T> Query = DbSet;
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var item in includeProperties.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    Query = Query.Include(item);
+                }
+            }
             Query = Query.Where(func);
             return Query.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll(string? includeProperties = null)
         {
           IQueryable<T> Query = DbSet;
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var item in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    Query = Query.Include(item);
+                }
+            }
             return Query.ToList();
         }
 

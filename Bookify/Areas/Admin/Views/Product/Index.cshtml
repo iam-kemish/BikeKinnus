@@ -23,6 +23,7 @@
                         <th>Price</th>
                         <th>Author</th>
                         <th>Image</th>
+                        <th>Category</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -35,6 +36,7 @@
                             <td>@item.Price</td>
                             <td>@item.Author</td>
                             <td><img src="@item.ImageUrl" style="width: 8vh; height: 5% " alt="Alternate Text" /></td>
+                            <td>@item.Category.Name</td>
                             <td>
                                 <div class="d-flex justify-content-start gap-2">
                                     <a class="btn btn-warning btn-sm" asp-controller="Product" asp-action="CreateUpdate" asp-route-id="@item.Id">

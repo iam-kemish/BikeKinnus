@@ -25,7 +25,7 @@ namespace Bookify.Areas.Admin.Controllers
         public IActionResult Index()
         {
 
-            List<Product> products = _IProduct.GetAll().ToList();
+            List<Product> products = _IProduct.GetAll(includeProperties: "Category").ToList();
           
             return View(products);
         }
