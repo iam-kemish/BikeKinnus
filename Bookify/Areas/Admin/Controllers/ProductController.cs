@@ -57,7 +57,7 @@ namespace Bookify.Areas.Admin.Controllers
         }
        [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateUpdate(ProductVM productvm, IFormFile? file, int? id)
+        public IActionResult CreateUpdate(ProductVM productvm, IFormFile? file,int? id)
         {
             if (ModelState.IsValid)
             {
@@ -69,12 +69,21 @@ namespace Bookify.Areas.Admin.Controllers
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                     string filePath = Path.Combine(wwwRootPath, "images");
 
-                    // Ensure directory exists
+                    if (!string.IsNullOrEmpty(productvm.Product.ImageUrl))
+                    {
+                        var oldImagePath = Path.Combine(wwwRootPath, productvm.Product.ImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+
+
                     if (!Directory.Exists(filePath))
                     {
                         Directory.CreateDirectory(filePath);
                     }
-
                     using (var fileStream = new FileStream(Path.Combine(filePath, fileName), FileMode.Create))
                     {
                         file.CopyTo(fileStream);
@@ -87,7 +96,6 @@ namespace Bookify.Areas.Admin.Controllers
                 {
                     // Create new product
                     _IProduct.Add(productvm.Product);
-                    _IProduct.Save();
                     TempData["success"] = "Product created successfully.";
                 }
                 else
@@ -107,7 +115,7 @@ namespace Bookify.Areas.Admin.Controllers
                         existingProduct.CategoryId = productvm.Product.CategoryId;
 
                         // Only update ImageUrl if a new image is uploaded
-                        if (file != null)
+                        if (existingProduct.ImageUrl != null)
                         {
                             existingProduct.ImageUrl = productvm.Product.ImageUrl;
                         }

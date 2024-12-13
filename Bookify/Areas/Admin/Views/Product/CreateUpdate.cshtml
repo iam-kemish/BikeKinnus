@@ -15,33 +15,35 @@
             <div class="col-md-10">
                 <h2 class="mb-4">@(Model.Product.Id == 0 ? "Create New " : "Update") Product</h2>
                 <form method="post" asp-controller="Product" enctype="multipart/form-data">
+                    @* image url isnt in any input field so it is keepen hidden here. *@
+                    <input asp-for="Product.ImageUrl"  hidden/>
                     <div class="mb-3">
                         <label class="form-label">Product Title</label>
-                        <input type="text" class="form-control" placeholder="Enter title" asp-for="Product.Title" required>
+                        <input type="text" class="form-control" placeholder="Enter title" asp-for="Product.Title" >
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Description</label>
-                        <input type="text" asp-for="Product.Description" class="form-control" placeholder="Enter Description" required>
+                        <input type="text" asp-for="Product.Description" class="form-control" placeholder="Enter Description" >
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Author</label>
-                        <input type="text" asp-for="Product.Author" class="form-control" placeholder="Enter Author" required>
+                        <input type="text" asp-for="Product.Author" class="form-control" placeholder="Enter Author" >
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ISBN</label>
-                        <input type="text" asp-for="Product.ISBN" class="form-control" placeholder="Enter ISBN" required>
+                        <input type="text" asp-for="Product.ISBN" class="form-control" placeholder="Enter ISBN" >
                     </div>
                     <div class="mb-3">
-                        <input type="number" asp-for="Product.ListPrice" class="form-control" placeholder="Enter Listed Price" required>
+                        <input type="number" asp-for="Product.ListPrice" class="form-control" placeholder="Enter Listed Price" >
                     </div>
                     <div class="mb-3">
-                        <input type="number" asp-for="Product.Price" class="form-control" placeholder="Enter Price" required>
+                        <input type="number" asp-for="Product.Price" class="form-control" placeholder="Enter Price" >
                     </div>
                     <div class="mb-3">
-                        <input type="number" asp-for="Product.Price50" class="form-control" placeholder="Enter Price 50" required>
+                        <input type="number" asp-for="Product.Price50" class="form-control" placeholder="Enter Price 50" >
                     </div>
                     <div class="mb-3">
-                        <input type="number" asp-for="Product.Price100" class="form-control" placeholder="Enter Price 100" required>
+                        <input type="number" asp-for="Product.Price100" class="form-control" placeholder="Enter Price 100" >
                     </div>
                     <div class="mb-3">
                         <select asp-for="@Model.Product.CategoryId" asp-items="@Model.ProductList" class="form-select border-0 shadow">
@@ -49,9 +51,7 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <input type="file"  name="file" class="form-control" required>
-                     
-
+                        <input type="file" name="file" class="form-control" >
                     </div>
                     <button type="submit" class="btn btn-primary">@(Model.Product.Id == 0 ? "Create" : "Update")</button>
                     <a href="@Url.Action("Index", "Category")" class="btn btn-secondary">Cancel</a>
