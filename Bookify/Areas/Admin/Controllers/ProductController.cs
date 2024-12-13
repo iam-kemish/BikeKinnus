@@ -14,11 +14,13 @@ namespace Bookify.Areas.Admin.Controllers
         private readonly ApplicationDbContext _Db;
         private IProduct _IProduct;
         private ICategory _ICategory;
-        public ProductController(ApplicationDbContext db, IProduct product, ICategory iCategory)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public ProductController(ApplicationDbContext db, IProduct product, ICategory iCategory, IWebHostEnvironment webHostEnvironment)
         {
             _Db = db;
             _IProduct = product;
             _ICategory = iCategory;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
@@ -28,27 +30,51 @@ namespace Bookify.Areas.Admin.Controllers
             return View(products);
         }
 
-        public IActionResult Create()
+        public IActionResult CreateUpdate(int? id)
         {
-            IEnumerable<SelectListItem> AllCategories = _ICategory.GetAll().Select(u => new SelectListItem
-            {
-                Text = u.Name,
-                Value = u.Id.ToString()
-            });
+          
             ProductVM productVM = new()
             {
-                ProductList = AllCategories,
+                ProductList = _ICategory.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                }),
                 Product = new Product()
             };
-            return View(productVM);
+            if(id== null || id== 0)
+            {
+                //create
+                return View(productVM);
+            }
+            else
+            {
+                //update
+                productVM.Product = _IProduct.Get(u => u.Id == id);
+                return View(productVM );
+
+            }
         }
-        [HttpPost]
+       [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ProductVM productvm)
+        public IActionResult CreateUpdate(ProductVM productvm, IFormFile? file)
         {
-           
+          
+        
             if (ModelState.IsValid)
             {
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string filePath = Path.Combine(wwwRootPath, @"images\");
+
+                    using (var fileStream = new FileStream(Path.Combine(filePath, fileName), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+                    productvm.Product.ImageUrl = @"\images\" + fileName;
+                }
                 _IProduct.Add(productvm.Product);
                 _IProduct.Save();
                 TempData["success"] = "Product created successfully.";
@@ -56,7 +82,6 @@ namespace Bookify.Areas.Admin.Controllers
             }
             return View();
         }
-
 
         public IActionResult Delete(int? id)
         {
@@ -91,36 +116,7 @@ namespace Bookify.Areas.Admin.Controllers
         }
 
 
-        public IActionResult Edit(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-
-            var ProductToEdit = _IProduct.Get(u => u.Id == id);
-            if (ProductToEdit == null)
-            {
-                return NotFound();
-            }
-
-            return View(ProductToEdit);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(Product product)
-        {
-            if (ModelState.IsValid)
-            {
-                _IProduct.Update(product);
-                _Db.SaveChanges();
-                TempData["success"] = "Product updated successfully.";
-                return RedirectToAction("Index");
-            }
-
-            return View();
-        }
+       
 
     }
 }
