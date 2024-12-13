@@ -57,31 +57,78 @@ namespace Bookify.Areas.Admin.Controllers
         }
        [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateUpdate(ProductVM productvm, IFormFile? file)
+        public IActionResult CreateUpdate(ProductVM productvm, IFormFile? file, int? id)
         {
-          
-        
             if (ModelState.IsValid)
             {
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
+
                 if (file != null)
                 {
+                    // Generate unique file name and save the image
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                    string filePath = Path.Combine(wwwRootPath, @"images\");
+                    string filePath = Path.Combine(wwwRootPath, "images");
+
+                    // Ensure directory exists
+                    if (!Directory.Exists(filePath))
+                    {
+                        Directory.CreateDirectory(filePath);
+                    }
 
                     using (var fileStream = new FileStream(Path.Combine(filePath, fileName), FileMode.Create))
                     {
                         file.CopyTo(fileStream);
                     }
-                    productvm.Product.ImageUrl = @"\images\" + fileName;
+
+                    productvm.Product.ImageUrl = Path.Combine("\\images\\", fileName);
                 }
-                _IProduct.Add(productvm.Product);
-                _IProduct.Save();
-                TempData["success"] = "Product created successfully.";
+
+                if (id == 0 || id == null)
+                {
+                    // Create new product
+                    _IProduct.Add(productvm.Product);
+                    _IProduct.Save();
+                    TempData["success"] = "Product created successfully.";
+                }
+                else
+                {
+                    // Update existing product
+                    var existingProduct = _IProduct.Get(u => u.Id == id);
+                    if (existingProduct != null)
+                    {
+                        existingProduct.Author = productvm.Product.Author;
+                        existingProduct.Price50 = productvm.Product.Price50;
+                        existingProduct.Price100 = productvm.Product.Price100;
+                        existingProduct.Price = productvm.Product.Price;
+                        existingProduct.Title = productvm.Product.Title;
+                        existingProduct.ISBN = productvm.Product.ISBN;
+                        existingProduct.Description = productvm.Product.Description;
+                        existingProduct.ListPrice = productvm.Product.ListPrice;
+                        existingProduct.CategoryId = productvm.Product.CategoryId;
+
+                        // Only update ImageUrl if a new image is uploaded
+                        if (file != null)
+                        {
+                            existingProduct.ImageUrl = productvm.Product.ImageUrl;
+                        }
+
+                        _IProduct.Update(existingProduct);
+                        _IProduct.Save();
+                        TempData["success"] = "Product updated successfully.";
+                    }
+                    else
+                    {
+                        TempData["error"] = "Product not found.";
+                    }
+                }
+
                 return RedirectToAction("Index");
             }
-            return View();
+
+            // Return the same view with validation errors
+            return View(productvm);
         }
+
 
         public IActionResult Delete(int? id)
         {
