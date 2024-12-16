@@ -1,34 +1,31 @@
-using Bookify.Models;
+using Bookify.DataAccess.Repositary;
 using Bookify.Models.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace Bookify.Areas.Customer.Controllers
 {
     [Area("Customer")]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IProduct _IProduct;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,IProduct product)
         {
-            _logger = logger;
+            _IProduct = product;
         }
 
         public IActionResult Index()
         {
-            return View();
+            IEnumerable<Product> listedProducts = _IProduct.GetAll(includeProperties: "Category").ToList();
+            return View(listedProducts);
         }
 
-        public IActionResult Privacy()
+        public IActionResult Details(int ProductId)
         {
-            return View();
+            Product Product = _IProduct.Get(u => u.Id == ProductId, includeProperties: "Category");
+            return View(Product);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+       
     }
 }
