@@ -27,24 +27,22 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Author</label>
-                        <input type="text" asp-for="Product.Author" class="form-control" placeholder="Enter Author" >
+                        <input type="text" asp-for="Product.ModelYear" class="form-control" placeholder="Enter ModelYear">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ISBN</label>
-                        <input type="text" asp-for="Product.ISBN" class="form-control" placeholder="Enter ISBN" >
+                        <input type="text" asp-for="Product.Brand" class="form-control" placeholder="Enter Brand" >
                     </div>
                     <div class="mb-3">
-                        <input type="number" asp-for="Product.ListPrice" class="form-control" placeholder="Enter Listed Price" >
+                        <input type="number" asp-for="Product.EngineCapacity" class="form-control" placeholder="Enter EngineCapacity">
                     </div>
                     <div class="mb-3">
                         <input type="number" asp-for="Product.Price" class="form-control" placeholder="Enter Price" >
                     </div>
                     <div class="mb-3">
-                        <input type="number" asp-for="Product.Price50" class="form-control" placeholder="Enter Price 50" >
+                        <input type="number" asp-for="Product.Mileage" class="form-control" placeholder="Enter Mileage">
                     </div>
-                    <div class="mb-3">
-                        <input type="number" asp-for="Product.Price100" class="form-control" placeholder="Enter Price 100" >
-                    </div>
+                
                     <div class="mb-3">
                         <select asp-for="@Model.Product.CategoryId" asp-items="@Model.ProductList" class="form-select border-0 shadow">
                             <option disabled selected>--Select Category--</option>

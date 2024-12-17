@@ -1,4 +1,4 @@
-namespace Bookify.Models.Models
+namespace BikeKinnus.Models.Models
 {
     public class ErrorViewModel
     {

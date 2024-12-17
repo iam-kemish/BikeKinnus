@@ -1,7 +1,7 @@
-﻿using Bookify.Models.Models;
-using Bookify.Repositary;
+﻿using BikeKinnus.Models.Models;
+using BikeKinnus.Repositary;
 
-namespace Bookify.DataAccess.Repositary
+namespace BikeKinnus.DataAccess.Repositary
 {
     public interface IProduct: IRepositary<Product>
     {

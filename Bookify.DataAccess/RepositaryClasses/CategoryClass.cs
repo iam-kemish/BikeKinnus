@@ -1,9 +1,9 @@
-﻿using Bookify.Database;
-using Bookify.Models.Models;
-using Bookify.Repositary;
+﻿using BikeKinnus.Database;
+using BikeKinnus.Models.Models;
+using BikeKinnus.Repositary;
 using System.Linq.Expressions;
 
-namespace Bookify.RepositaryClasses
+namespace BikeKinnus.RepositaryClasses
 {
     public class CategoryClass : Repositary<Category>, ICategory
     {
@@ -20,7 +20,7 @@ namespace Bookify.RepositaryClasses
 
         public void Update(Category category)
         {
-            _db.categories.Update(category);
+            _db.Categories.Update(category);
         }
     }
 }

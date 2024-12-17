@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bookify.Models.Models.ViewModels
+namespace BikeKinnus.Models.Models.ViewModels
 {
     public class ProductVM
     {

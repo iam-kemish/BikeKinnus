@@ -1,9 +1,9 @@
-﻿using Bookify.DataAccess.Repositary;
-using Bookify.Database;
-using Bookify.Models.Models;
-using Bookify.RepositaryClasses;
+﻿using BikeKinnus.DataAccess.Repositary;
+using BikeKinnus.Database;
+using BikeKinnus.Models.Models;
+using BikeKinnus.RepositaryClasses;
 
-namespace Bookify.DataAccess.RepositaryClasses
+namespace BikeKinnus.DataAccess.RepositaryClasses
 {
     public class ProductClass : Repositary<Product>, IProduct
     {
@@ -20,7 +20,7 @@ namespace Bookify.DataAccess.RepositaryClasses
 
         public void Update(Product product)
         {
-            _Db.products.Update(product);
+            _Db.Products.Update(product);
         }
     }
 }

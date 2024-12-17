@@ -1,6 +1,6 @@
-﻿using Bookify.Models.Models;
+﻿using BikeKinnus.Models.Models;
 
-namespace Bookify.Repositary
+namespace BikeKinnus.Repositary
 {
     public interface ICategory:IRepositary<Category>
     {

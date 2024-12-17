@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Bookify.Repositary
+namespace BikeKinnus.Repositary
 {
     public interface IRepositary<T > where T : class
     {

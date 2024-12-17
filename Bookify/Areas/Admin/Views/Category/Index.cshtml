@@ -19,7 +19,7 @@
                 <thead class="table-dark">
                     <tr>
                         <th>#</th>
-                        <th>Display Order</th>
+                        <th>Description</th>
                         <th>Name</th>
                         <th>Actions</th>
                     </tr>
@@ -29,7 +29,7 @@
                     {
                         <tr>
                             <td>@item.Id</td>
-                            <td>@item.DisplayOrder</td>
+                            <td>@item.Description</td>
                             <td>@item.Name</td>
                             <td>
                                 <a class="btn btn-warning btn-sm" asp-controller="Category" asp-action="Edit" asp-route-id="@item.Id">Edit</a>

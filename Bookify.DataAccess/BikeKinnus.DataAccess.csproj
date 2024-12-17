@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bookify.Models\Bookify.Models.csproj" />
+    <ProjectReference Include="..\Bookify.Models\BikeKinnus.Models.csproj" />
   </ItemGroup>
 
 </Project>

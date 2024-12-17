@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 
-namespace Bookify.Areas.Identity.Pages.Account
+namespace BikeKinnus.Areas.Identity.Pages.Account
 {
     public class ResetPasswordModel : PageModel
     {

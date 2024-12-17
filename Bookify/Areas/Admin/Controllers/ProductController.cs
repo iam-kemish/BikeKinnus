@@ -1,12 +1,12 @@
-﻿using Bookify.DataAccess.Repositary;
-using Bookify.Database;
-using Bookify.Models.Models;
-using Bookify.Models.Models.ViewModels;
-using Bookify.Repositary;
+﻿using BikeKinnus.DataAccess.Repositary;
+using BikeKinnus.Database;
+using BikeKinnus.Models.Models;
+using BikeKinnus.Models.Models.ViewModels;
+using BikeKinnus.Repositary;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Bookify.Areas.Admin.Controllers
+namespace BikeKinnus.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class ProductController : Controller
@@ -104,16 +104,15 @@ namespace Bookify.Areas.Admin.Controllers
                     var existingProduct = _IProduct.Get(u => u.Id == id);
                     if (existingProduct != null)
                     {
-                        existingProduct.Author = productvm.Product.Author;
-                        existingProduct.Price50 = productvm.Product.Price50;
-                        existingProduct.Price100 = productvm.Product.Price100;
+                      
                         existingProduct.Price = productvm.Product.Price;
                         existingProduct.Title = productvm.Product.Title;
-                        existingProduct.ISBN = productvm.Product.ISBN;
+                       existingProduct.Brand=productvm.Product.Brand;
                         existingProduct.Description = productvm.Product.Description;
-                        existingProduct.ListPrice = productvm.Product.ListPrice;
+                        existingProduct.Mileage = productvm.Product.Mileage;
                         existingProduct.CategoryId = productvm.Product.CategoryId;
-
+                        existingProduct.EngineCapacity = productvm.Product.EngineCapacity;
+                        existingProduct.ModelYear = productvm.Product.ModelYear;
                         // Only update ImageUrl if a new image is uploaded
                         if (existingProduct.ImageUrl != null)
                         {

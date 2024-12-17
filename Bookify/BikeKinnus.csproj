@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bookify.DataAccess\Bookify.DataAccess.csproj" />
+    <ProjectReference Include="..\Bookify.DataAccess\BikeKinnus.DataAccess.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,9 +1,9 @@
-﻿using Bookify.Database;
-using Bookify.Models.Models;
-using Bookify.Repositary;
+﻿using BikeKinnus.Database;
+using BikeKinnus.Models.Models;
+using BikeKinnus.Repositary;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Bookify.Areas.Admin.Controllers
+namespace BikeKinnus.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class CategoryController : Controller
@@ -30,10 +30,7 @@ namespace Bookify.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Category category)
         {
-            if (category.Name.ToLower() == category.DisplayOrder.ToString())
-            {
-                ModelState.AddModelError("Invalid", "Name cannot exactly match with order.");
-            }
+           
             if (ModelState.IsValid)
             {
                 _ICategory.Add(category);

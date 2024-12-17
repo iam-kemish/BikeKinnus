@@ -1,18 +1,17 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Bookify.Models.Models
+namespace BikeKinnus.Models.Models
 {
 
 
     public class Category
     {
         public int Id { get; set; }
-        [Required]
-        [MaxLength(70)]
-        public string Name { get; set; }
-        [Required]
-        public int DisplayOrder { get; set; }
 
+        [Required]
+        public string? Name { get; set; } // Category name, e.g., Sports, Cruiser, Commuter
+
+        public string? Description { get; set; }
     }
 }

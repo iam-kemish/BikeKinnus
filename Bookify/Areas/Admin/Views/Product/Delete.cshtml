@@ -21,29 +21,25 @@
                 <input type="text" asp-for="Description" class="form-control"  disabled>
             </div>
             <div class="mb-3">
-                <label class="form-label">Author</label>
-                <input type="text" asp-for="Author" class="form-control" disabled>
+                <label class="form-label">Mileage</label>
+                <input type="text" asp-for="Mileage" class="form-control" disabled>
             </div>
             <div class="mb-3">
-                <label class="form-label">ISBN</label>
-                <input type="text" asp-for="ISBN" class="form-control"  disabled>
+                <label class="form-label">ModelYear</label>
+                <input type="text" asp-for="ModelYear" class="form-control"  disabled>
             </div>
             <div class="mb-3">
-                <label class="form-label"></label>
-                <input type="number" asp-for="ListPrice" class="form-control"  disabled>
+                <label class="form-label">Brand</label>
+                <input type="number" asp-for="Brand" class="form-control"  disabled>
             </div>
             <div class="mb-3">
-                <input type="number" asp-for="ListPrice" class="form-control"  disabled>
+                <input type="number" asp-for="EngineCapacity" class="form-control"  disabled>
             </div>
             <div class="mb-3">
                 <input type="number" asp-for="Price" class="form-control"  disabled>
             </div>
-            <div class="mb-3">
-                <input type="number" asp-for="Price50" class="form-control" disabled>
-            </div>
-            <div class="mb-3">
-                <input type="number" asp-for="Price100" class="form-control"  disabled>
-            </div>
+           
+          
             <button type="submit" class="btn btn-danger">Delete</button>
             <a href="@Url.Action("Index", "Category")" class="btn btn-secondary">Cancel</a>
         </form>

@@ -19,10 +19,12 @@
                 <thead class="table-dark">
                     <tr>
                         <th>Title</th>
-                        <th>ISBN</th>
-                        <th>Price</th>
-                        <th>Author</th>
+                        <th>Description</th>
+                        <th>Brand</th>
+                        <th>Engine-Capacity</th>
                         <th>Image</th>
+                        <th>Price</th>
+                        <th>Mileage</th>
                         <th>Category</th>
                         <th>Actions</th>
                     </tr>
@@ -32,10 +34,12 @@
                     {
                         <tr>
                             <td>@item.Title</td>
-                            <td>@item.ISBN</td>
-                            <td>@item.Price</td>
-                            <td>@item.Author</td>
+                            <td>@item.Description</td>
+                            <td>@item.Brand</td>
+                            <td>@item.EngineCapacity</td>
                             <td><img src="@item.ImageUrl" style="width: 8vh; height: 5% " alt="Alternate Text" /></td>
+                            <td>Rs.@item.Price</td>
+                            <td>@item.Mileage</td>
                             <td>@item.Category.Name</td>
                             <td>
                                 <div class="d-flex justify-content-start gap-2">

@@ -1,8 +1,8 @@
-using Bookify.DataAccess.Repositary;
-using Bookify.Models.Models;
+using BikeKinnus.DataAccess.Repositary;
+using BikeKinnus.Models.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Bookify.Areas.Customer.Controllers
+namespace BikeKinnus.Areas.Customer.Controllers
 {
     [Area("Customer")]
     public class HomeController : Controller

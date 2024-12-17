@@ -1,9 +1,9 @@
-﻿using Bookify.Database;
-using Bookify.Repositary;
+﻿using BikeKinnus.Database;
+using BikeKinnus.Repositary;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace Bookify.RepositaryClasses
+namespace BikeKinnus.RepositaryClasses
 {
     public class Repositary<T> : IRepositary<T> where T : class
     {
@@ -13,7 +13,7 @@ namespace Bookify.RepositaryClasses
         
         _Db = Db;
         this.DbSet = _Db.Set<T>();
-         _Db.products.Include(u => u.Category);
+         _Db.Products.Include(u => u.Category);
         }
        
         public void Add(T item)

@@ -1,8 +1,8 @@
-using Bookify.DataAccess.Repositary;
-using Bookify.DataAccess.RepositaryClasses;
-using Bookify.Database;
-using Bookify.Repositary;
-using Bookify.RepositaryClasses;
+using BikeKinnus.DataAccess.Repositary;
+using BikeKinnus.DataAccess.RepositaryClasses;
+using BikeKinnus.Database;
+using BikeKinnus.Repositary;
+using BikeKinnus.RepositaryClasses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 
@@ -23,6 +23,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<App
 
 builder.Services.AddScoped<ICategory,CategoryClass>();
 builder.Services.AddScoped<IProduct, ProductClass>();
+builder.Services.AddRazorPages();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -36,11 +37,13 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+
 app.UseRouting();
+
 //Authentication was added before Authorization because before giving user specific tasks on the website according to their roles, we need to sign in a valid user.
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
