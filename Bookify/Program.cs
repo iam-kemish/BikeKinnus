@@ -5,6 +5,7 @@ using BikeKinnus.Repositary;
 using BikeKinnus.RepositaryClasses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,12 +18,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options=> options.UseSqlServ
 // This was changed to
 
 //this
-builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentity<IdentityUser,IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 //options => options.SignIn.RequireConfirmedAccount = true, was removed so that user doesnt have to confirm his/her email while logging in.
 ////////////
 
 builder.Services.AddScoped<ICategory,CategoryClass>();
 builder.Services.AddScoped<IProduct, ProductClass>();
+builder.Services.AddScoped<IEmailSender, EmailSenderr>();
 builder.Services.AddRazorPages();
 var app = builder.Build();
 
