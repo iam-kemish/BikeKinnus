@@ -56,22 +56,10 @@ namespace BikeKinnus.Database
                     CategoryId = 2,
                     ImageUrl = "/images/pulsar_ns200.jpg"
                 },
+               
                 new Product
                 {
                     Id = 3,
-                    Title = "Apache RTR 160 4V",
-                    Description = "160cc race-tuned fuel-injected engine with sporty graphics.",
-                    Brand = "TVS",
-                    Price = 1100,
-                    ModelYear = 2022,
-                    EngineCapacity = 160,
-                    Mileage = 50,
-                    CategoryId = 5,
-                    ImageUrl = "/images/apache_rtr160.jpg"
-                },
-                new Product
-                {
-                    Id = 4,
                     Title = "Pulsar 150",
                     Description = "Classic 149cc DTS-i engine offering power and efficiency.",
                     Brand = "Bajaj",
@@ -84,7 +72,7 @@ namespace BikeKinnus.Database
                 },
                 new Product
                 {
-                    Id = 5,
+                    Id = 4,
                     Title = "Dominar 400",
                     Description = "373cc sports-touring beast with premium performance and LED headlamps.",
                     Brand = "Bajaj",
@@ -97,7 +85,7 @@ namespace BikeKinnus.Database
                 },
                 new Product
                 {
-                    Id = 6,
+                    Id = 5,
                     Title = "Suzuki Gixxer 160",
                     Description = "Sporty 155cc engine with aggressive styling and aerodynamic design.",
                     Brand = "Suzuki",
@@ -110,7 +98,7 @@ namespace BikeKinnus.Database
                 },
                 new Product
                 {
-                    Id = 7,
+                    Id = 6,
                     Title = "Avenger 160 Cruise",
                     Description = "160cc engine offering relaxed ergonomics for long-distance cruising.",
                     Brand = "Bajaj",
@@ -123,7 +111,7 @@ namespace BikeKinnus.Database
                 },
                 new Product
                 {
-                    Id = 8,
+                    Id = 7,
                     Title = "Vikrant INS 150",
                     Description = "A tribute to the INS Vikrant with a 149cc engine for efficient performance.",
                     Brand = "Bajaj",
@@ -133,7 +121,20 @@ namespace BikeKinnus.Database
                     Mileage = 55,
                     CategoryId = 5,
                     ImageUrl = "/images/vikrant_ins150.jpg"
-                }
+                },
+                 new Product
+                 {
+                     Id = 3,
+                     Title = "Apache RTR 160 4V",
+                     Description = "160cc race-tuned fuel-injected engine with sporty graphics.",
+                     Brand = "TVS",
+                     Price = 1100,
+                     ModelYear = 2022,
+                     EngineCapacity = 160,
+                     Mileage = 50,
+                     CategoryId = 5,
+                     ImageUrl = "/images/apache_rtr160.jpg"
+                 }
             );
         }
     }

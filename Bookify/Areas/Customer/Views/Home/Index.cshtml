@@ -14,7 +14,7 @@
                     <div class="col-12 p-1">
                         <div class="card border-0 p-3 shadow border-top border-5 rounded">
                             <!-- Bike Image -->
-                            <img src="@product.ImageUrl" class="card-img-top rounded" alt="Bike Image" />
+                            <img src="@product.ImageUrl" class="card-img-top rounded equal-img" alt="Bike Image" />
 
                             <!-- Card Body -->
                             <div class="card-body pb-0">
@@ -56,3 +56,13 @@
         }
     </div>
 </div>
+
+<style>
+    /* Equal Image Size Class */
+    .equal-img {
+        height: 200px; /* Adjust the height as per your layout */
+        width: 100%; /* Ensures it spans the full width of the card */
+        object-fit: cover; /* Maintains image proportions while covering the area */
+        border-radius: 5px; /* Keeps rounded corners */
+    }
+</style>
