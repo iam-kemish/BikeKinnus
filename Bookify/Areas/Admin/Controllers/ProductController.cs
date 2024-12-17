@@ -35,7 +35,7 @@ namespace BikeKinnus.Areas.Admin.Controllers
           
             ProductVM productVM = new()
             {
-                ProductList = _ICategory.GetAll().Select(u => new SelectListItem
+                CategoryList = _ICategory.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
@@ -56,7 +56,7 @@ namespace BikeKinnus.Areas.Admin.Controllers
             }
         }
        [HttpPost]
-        [ValidateAntiForgeryToken]
+     
         public IActionResult CreateUpdate(ProductVM productvm, IFormFile? file,int? id)
         {
             if (ModelState.IsValid)
@@ -96,6 +96,7 @@ namespace BikeKinnus.Areas.Admin.Controllers
                 {
                     // Create new product
                     _IProduct.Add(productvm.Product);
+                    _IProduct.Save();
                     TempData["success"] = "Product created successfully.";
                 }
                 else
@@ -130,6 +131,14 @@ namespace BikeKinnus.Areas.Admin.Controllers
                 }
 
                 return RedirectToAction("Index");
+            }
+            else
+            {
+                productvm.CategoryList = _IProduct.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.Title,
+                    Value = u.Id.ToString()
+                }); ;
             }
 
             // Return the same view with validation errors

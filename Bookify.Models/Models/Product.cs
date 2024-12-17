@@ -10,7 +10,7 @@ namespace BikeKinnus.Models.Models
 
         [Required]
         public string? Title { get; set; } // Name or model of the bike
-
+        [Required]
         public string? Description { get; set; } // Bike details and specs
 
         [Required]

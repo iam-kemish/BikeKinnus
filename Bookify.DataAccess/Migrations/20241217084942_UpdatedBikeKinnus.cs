@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BikeKinnus.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialBikeKinnus : Migration
+    public partial class UpdatedBikeKinnus : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -183,7 +183,7 @@ namespace BikeKinnus.DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Brand = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     ModelYear = table.Column<int>(type: "int", nullable: false),
@@ -221,14 +221,15 @@ namespace BikeKinnus.DataAccess.Migrations
                 columns: new[] { "Id", "Brand", "CategoryId", "Description", "EngineCapacity", "ImageUrl", "Mileage", "ModelYear", "Price", "Title" },
                 values: new object[,]
                 {
-                    { 1, "Yamaha", 1, "155cc fuel-injected engine with aggressive styling and efficient mileage.", 155, "/images/yamaha_fz_v3.jpg", 45.0, 2023, 1200.0, "Yamaha FZ V3" },
-                    { 2, "Bajaj", 2, "199.5cc liquid-cooled engine with sharp design and sporty performance.", 199, "/images/pulsar_ns200.jpg", 35.0, 2023, 1500.0, "Pulsar NS200" },
-                    { 3, "TVS", 5, "160cc race-tuned fuel-injected engine with sporty graphics.", 160, "/images/apache_rtr160.jpg", 50.0, 2022, 1100.0, "Apache RTR 160 4V" },
-                    { 4, "Bajaj", 5, "Classic 149cc DTS-i engine offering power and efficiency.", 149, "/images/pulsar_150.jpg", 55.0, 2022, 1000.0, "Pulsar 150" },
-                    { 5, "Bajaj", 4, "373cc sports-touring beast with premium performance and LED headlamps.", 373, "/images/dominar_400.jpg", 30.0, 2023, 2500.0, "Dominar 400" },
-                    { 6, "Suzuki", 2, "Sporty 155cc engine with aggressive styling and aerodynamic design.", 155, "/images/suzuki_gixxer_160.jpg", 45.0, 2023, 1300.0, "Suzuki Gixxer 160" },
-                    { 7, "Bajaj", 3, "160cc engine offering relaxed ergonomics for long-distance cruising.", 160, "/images/avenger_160_cruise.jpg", 45.0, 2022, 1400.0, "Avenger 160 Cruise" },
-                    { 8, "Bajaj", 5, "A tribute to the INS Vikrant with a 149cc engine for efficient performance.", 149, "/images/vikrant_ins150.jpg", 55.0, 2021, 950.0, "Vikrant INS 150" }
+                    { 1, "Yamaha", 1, "155cc fuel-injected engine with aggressive styling and efficient mileage.", 155, "/images/yamaha_fz_v3.jpg", 45.0, 2023, 390000.0, "Yamaha FZ V3" },
+                    { 2, "Bajaj", 2, "199.5cc liquid-cooled engine with sharp design and sporty performance.", 199, "/images/pulsar_ns200.jpg", 35.0, 2023, 374000.0, "Pulsar NS200" },
+                    { 3, "Bajaj", 4, "373cc sports-touring beast with premium performance and LED headlamps.", 373, "/images/dominar_400.jpg", 30.0, 2023, 669500.0, "Dominar 400" },
+                    { 4, "Suzuki", 2, "Sporty 155cc engine with aggressive styling and aerodynamic design.", 155, "/images/suzuki_gixxer_160.jpg", 45.0, 2023, 278000.0, "Suzuki Gixxer 160" },
+                    { 5, "Bajaj", 3, "160cc engine offering relaxed ergonomics for long-distance cruising.", 160, "/images/avenger_160_cruise.jpg", 45.0, 2022, 214000.0, "Avenger 160 Cruise" },
+                    { 6, "Bajaj", 5, "A tribute to the INS Vikrant with a 149cc engine for efficient performance.", 149, "/images/vikrant_ins150.jpg", 55.0, 2021, 195000.0, "Vikrant INS 150" },
+                    { 7, "TVS", 5, "160cc race-tuned fuel-injected engine with sporty graphics.", 160, "/images/apache_rtr160.jpg", 50.0, 2022, 248000.0, "Apache RTR 160 4V" },
+                    { 8, "KTM", 1, "The KTM Duke 200 is a high-performance street motorcycle with a 199.5cc engine, offering impressive power and stylish design for enthusiasts.", 199, "/images/ktm_duke_200.jpg", 35.0, 2024, 558000.0, "KTM Duke 200" },
+                    { 9, "Bajaj", 5, "Classic 149cc DTS-i engine offering power and efficiency.", 149, "/images/pulsar_150.jpg", 55.0, 2022, 243000.0, "Pulsar 150" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -36,7 +36,7 @@ namespace BikeKinnus.Database
                     Title = "Yamaha FZ V3",
                     Description = "155cc fuel-injected engine with aggressive styling and efficient mileage.",
                     Brand = "Yamaha",
-                    Price = 1200,
+                    Price = 390000,
                     ModelYear = 2023,
                     EngineCapacity = 155,
                     Mileage = 45,
@@ -49,7 +49,7 @@ namespace BikeKinnus.Database
                     Title = "Pulsar NS200",
                     Description = "199.5cc liquid-cooled engine with sharp design and sporty performance.",
                     Brand = "Bajaj",
-                    Price = 1500,
+                    Price = 374000,
                     ModelYear = 2023,
                     EngineCapacity = 199,
                     Mileage = 35,
@@ -57,26 +57,14 @@ namespace BikeKinnus.Database
                     ImageUrl = "/images/pulsar_ns200.jpg"
                 },
                
+               
                 new Product
                 {
                     Id = 3,
-                    Title = "Pulsar 150",
-                    Description = "Classic 149cc DTS-i engine offering power and efficiency.",
-                    Brand = "Bajaj",
-                    Price = 1000,
-                    ModelYear = 2022,
-                    EngineCapacity = 149,
-                    Mileage = 55,
-                    CategoryId = 5,
-                    ImageUrl = "/images/pulsar_150.jpg"
-                },
-                new Product
-                {
-                    Id = 4,
                     Title = "Dominar 400",
                     Description = "373cc sports-touring beast with premium performance and LED headlamps.",
                     Brand = "Bajaj",
-                    Price = 2500,
+                    Price = 669500,
                     ModelYear = 2023,
                     EngineCapacity = 373,
                     Mileage = 30,
@@ -85,11 +73,11 @@ namespace BikeKinnus.Database
                 },
                 new Product
                 {
-                    Id = 5,
+                    Id = 4,
                     Title = "Suzuki Gixxer 160",
                     Description = "Sporty 155cc engine with aggressive styling and aerodynamic design.",
                     Brand = "Suzuki",
-                    Price = 1300,
+                    Price = 278000,
                     ModelYear = 2023,
                     EngineCapacity = 155,
                     Mileage = 45,
@@ -98,11 +86,11 @@ namespace BikeKinnus.Database
                 },
                 new Product
                 {
-                    Id = 6,
+                    Id = 5,
                     Title = "Avenger 160 Cruise",
                     Description = "160cc engine offering relaxed ergonomics for long-distance cruising.",
                     Brand = "Bajaj",
-                    Price = 1400,
+                    Price = 214000,
                     ModelYear = 2022,
                     EngineCapacity = 160,
                     Mileage = 45,
@@ -111,11 +99,11 @@ namespace BikeKinnus.Database
                 },
                 new Product
                 {
-                    Id = 7,
+                    Id = 6,
                     Title = "Vikrant INS 150",
                     Description = "A tribute to the INS Vikrant with a 149cc engine for efficient performance.",
                     Brand = "Bajaj",
-                    Price = 950,
+                    Price = 195000,
                     ModelYear = 2021,
                     EngineCapacity = 149,
                     Mileage = 55,
@@ -124,17 +112,44 @@ namespace BikeKinnus.Database
                 },
                  new Product
                  {
-                     Id = 3,
+                     Id = 7,
                      Title = "Apache RTR 160 4V",
                      Description = "160cc race-tuned fuel-injected engine with sporty graphics.",
                      Brand = "TVS",
-                     Price = 1100,
+                     Price = 248000,
                      ModelYear = 2022,
                      EngineCapacity = 160,
                      Mileage = 50,
                      CategoryId = 5,
                      ImageUrl = "/images/apache_rtr160.jpg"
-                 }
+                 },
+                 new Product
+                 {
+                     Id = 8,
+                     Title = "KTM Duke 200",
+                     Description = "The KTM Duke 200 is a high-performance street motorcycle with a 199.5cc engine, offering impressive power and stylish design for enthusiasts.",
+                     Brand = "KTM",
+                     Price = 558000,
+                     ModelYear = 2024,
+                     EngineCapacity = 199,
+                     Mileage = 35,
+                     CategoryId = 1,
+                     ImageUrl = "/images/ktm_duke_200.jpg"
+                 },
+                  new Product
+                  {
+                      Id = 9,
+                      Title = "Pulsar 150",
+                      Description = "Classic 149cc DTS-i engine offering power and efficiency.",
+                      Brand = "Bajaj",
+                      Price = 243000,
+                      ModelYear = 2022,
+                      EngineCapacity = 149,
+                      Mileage = 55,
+                      CategoryId = 5,
+                      ImageUrl = "/images/pulsar_150.jpg"
+                  }
+
             );
         }
     }

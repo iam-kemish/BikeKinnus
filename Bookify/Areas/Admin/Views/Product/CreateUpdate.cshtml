@@ -20,36 +20,45 @@
                     <div class="mb-3">
                         <label class="form-label">Product Title</label>
                         <input type="text" class="form-control" placeholder="Enter title" asp-for="Product.Title" >
+                        <span asp-validation-for="Product.Title" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Description</label>
                         <input type="text" asp-for="Product.Description" class="form-control" placeholder="Enter Description" >
+                        <span asp-validation-for="Product.Description" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ModelYear</label>
                         <input type="text" asp-for="Product.ModelYear" class="form-control" placeholder="Enter ModelYear">
+                        <span asp-validation-for="Product.ModelYear" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Brand</label>
                         <input type="text" asp-for="Product.Brand" class="form-control" placeholder="Enter Brand" >
+                        <span asp-validation-for="Product.Brand" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Engine Capacity</label>
                         <input type="number" asp-for="Product.EngineCapacity" class="form-control" placeholder="Enter EngineCapacity">
+                        <span asp-validation-for="Product.EngineCapacity" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Price</label>
                         <input type="number" asp-for="Product.Price" class="form-control" placeholder="Enter Price" >
+                        <span asp-validation-for="Product.Price" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Mileage</label>
                         <input type="number" asp-for="Product.Mileage" class="form-control" placeholder="Enter Mileage">
+                        <span asp-validation-for="Product.Mileage" class="text-danger"></span>
                     </div>
-                
-                    <div class="mb-3">
-                        <select asp-for="@Model.Product.CategoryId" asp-items="@Model.ProductList" class="form-select border-0 shadow">
+
+                    <div class="form-floating py-2 col-12">
+                        <select asp-for="@Model.Product.CategoryId" asp-items="@Model.CategoryList" class="form-select border-0 shadow">
                             <option disabled selected>--Select Category--</option>
                         </select>
+                        <label asp-for="Product.CategoryId" class="ms-2"></label>
+                        <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <input type="file" name="file" class="form-control" >
