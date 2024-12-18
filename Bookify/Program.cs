@@ -5,7 +5,7 @@ using BikeKinnus.Repositary;
 using BikeKinnus.RepositaryClasses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +24,7 @@ builder.Services.AddIdentity<IdentityUser,IdentityRole>().AddEntityFrameworkStor
 
 builder.Services.AddScoped<ICategory,CategoryClass>();
 builder.Services.AddScoped<IProduct, ProductClass>();
-builder.Services.AddScoped<IEmailSender, EmailSenderr>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddRazorPages();
 var app = builder.Build();
 
