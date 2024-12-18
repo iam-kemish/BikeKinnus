@@ -18,7 +18,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options=> options.UseSqlServ
 // This was changed to
 
 //this
-builder.Services.AddIdentity<IdentityUser,IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentity<IdentityUser,IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 //options => options.SignIn.RequireConfirmedAccount = true, was removed so that user doesnt have to confirm his/her email while logging in.
 ////////////
 
