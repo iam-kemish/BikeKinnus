@@ -75,7 +75,7 @@ namespace BikeKinnus.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
             public string? Name { get; set; }
-
+            public string? PhoneNumber { get; set; }
             public string? City { get; set; }
             public int? Age { get; set; }
             public string? Role { get; set; }
@@ -114,7 +114,10 @@ namespace BikeKinnus.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
-
+                user.Age = Input.Age;
+                user.Name = Input.Name;
+                user.City = Input.City;
+                user.PhoneNumber = Input.PhoneNumber;
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -157,17 +160,15 @@ namespace BikeKinnus.Areas.Identity.Pages.Account
                     }
                 }
 
+                Input = new()
+                {
+                    RoleList = _RoleManager.Roles.Select(u => u.Name).Select(i => new SelectListItem
+                    {
+                        Text = i,
+                        Value = i
+                    })
+                };
 
-
-                //Input = new()
-                //{
-                //    RoleList = _RoleManager.Roles.Select(u => u.Name).Select(i => new SelectListItem
-                //    {
-                //        Text = i,
-                //        Value = i
-                //    })
-                //};
-           
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);

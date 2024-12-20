@@ -8,5 +8,6 @@ namespace BikeKinnus.Models.Models
         public string? City { get; set; }
         
         public int? Age { get; set; }
+       
     }
 }
