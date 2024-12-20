@@ -1,11 +1,13 @@
 ﻿using BikeKinnus.Database;
 using BikeKinnus.Models.Models;
 using BikeKinnus.Repositary;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BikeKinnus.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles =StaticDetails.Role_Admin)]
     public class CategoryController : Controller
     {
         private readonly ApplicationDbContext _Db;

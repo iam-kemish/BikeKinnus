@@ -119,9 +119,10 @@ namespace BikeKinnus.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    //If role is passed null, role of costumer is assigned to the user.
+                  
                     if (string.IsNullOrEmpty(Input.Role))
                     {
+                        //If role is passed null, role of costumer is assigned to the user.
                         await _userManager.AddToRoleAsync(user, StaticDetails.Role_Customer);
                       
                     }
@@ -129,7 +130,6 @@ namespace BikeKinnus.Areas.Identity.Pages.Account
                     {
                         await _userManager.AddToRoleAsync(user, Input.Role);
                     }
-
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -148,6 +148,7 @@ namespace BikeKinnus.Areas.Identity.Pages.Account
                     }
                     else
                     {
+                        //Automatically sign in the user after registration
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }

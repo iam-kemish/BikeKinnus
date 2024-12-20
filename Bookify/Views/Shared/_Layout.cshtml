@@ -26,17 +26,20 @@
                             <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                       
-                        <div class="dropdown">
-                            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                               Contents
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                             
-                                <a class="dropdown-item text-dark text-center" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
-                                <a class="dropdown-item text-dark text-center" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a>
+                        @if (User.IsInRole(StaticDetails.Role_Admin))
+                        {
+                            <div class="dropdown">
+                                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Contents
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                                    <a class="dropdown-item text-dark text-center" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
+                                    <a class="dropdown-item text-dark text-center" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a>
+                                </div>
                             </div>
-                        </div>
-                      
+                        }
+
                     </ul>
                     <partial name="_LoginPartial"/>
                    

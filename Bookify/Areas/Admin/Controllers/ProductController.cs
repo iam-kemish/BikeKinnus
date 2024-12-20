@@ -3,12 +3,14 @@ using BikeKinnus.Database;
 using BikeKinnus.Models.Models;
 using BikeKinnus.Models.Models.ViewModels;
 using BikeKinnus.Repositary;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BikeKinnus.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles =StaticDetails.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _Db;
