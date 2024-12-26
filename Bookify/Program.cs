@@ -30,6 +30,7 @@ builder.Services.AddIdentity<IdentityUser,IdentityRole>().AddEntityFrameworkStor
 builder.Services.AddScoped<ICategory,CategoryClass>();
 builder.Services.AddScoped<IProduct, ProductClass>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddScoped<ICompany, CompanyClass>();
 builder.Services.AddRazorPages();
 var app = builder.Build();
 
