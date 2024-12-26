@@ -1,0 +1,71 @@
+﻿@model Company
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Company</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <form method="post" asp-controller="Company" asp-route-id="@Model.Id">
+        <div class="card shadow border-0 mt-4 mb-4">
+            <div class="card-header bg-danger bg-gradient text-light py-4">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h3 class="text-white text-uppercase">Delete Confirmation</h3>
+                        <p class="text-white-50 fw-semibold mb-0">Are you sure you want to delete this company?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="border p-3">
+                    <input asp-for="Id" hidden />
+
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="Name" class="form-control" disabled />
+                        <label asp-for="Name" class="ms-2"></label>
+                    </div>
+
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="PhoneNumber" class="form-control" disabled />
+                        <label asp-for="PhoneNumber" class="ms-2"></label>
+                    </div>
+
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="StreetAddress" class="form-control" disabled />
+                        <label asp-for="StreetAddress" class="ms-2"></label>
+                    </div>
+
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="City" class="form-control" disabled />
+                        <label asp-for="City" class="ms-2"></label>
+                    </div>
+
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="State" class="form-control" disabled />
+                        <label asp-for="State" class="ms-2"></label>
+                    </div>
+
+                    <div class="form-floating py-2 col-12">
+                        <input asp-for="PostalCode" class="form-control" disabled />
+                        <label asp-for="PostalCode" class="ms-2"></label>
+                    </div>
+
+                    <div class="mt-4 d-flex gap-3">
+                        <button type="submit" class="btn btn-danger fw-semibold">
+                            <i class="bi bi-trash"></i> Delete
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-primary border fw-semibol">
+                            <i class="bi bi-arrow-left"></i> Cancel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
