@@ -5,6 +5,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
+using BikeKinnus.DataAccess.Repositary;
 using BikeKinnus.Models.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -26,13 +27,16 @@ namespace BikeKinnus.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _RoleManager;
+        private readonly ICompany _ICompany;
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             RoleManager<IdentityRole> roleManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ICompany ICompany
+            )
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -41,6 +45,7 @@ namespace BikeKinnus.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _RoleManager = roleManager;
+            _ICompany = ICompany;
         }
 
        
@@ -81,6 +86,9 @@ namespace BikeKinnus.Areas.Identity.Pages.Account
             public string? Role { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList {  get; set; }
+            public int? CompanyId { get; set; }
+            [ValidateNever]
+            public IEnumerable<SelectListItem> CompanyList { get; set; }
         }
 
 
@@ -100,9 +108,14 @@ namespace BikeKinnus.Areas.Identity.Pages.Account
                 {
                     Text = i,
                     Value = i
+                }),
+                CompanyList = _ICompany.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
                 })
-            };
-
+            }; 
+         
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
