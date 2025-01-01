@@ -22,8 +22,15 @@ namespace BikeKinnus.Areas.Customer.Controllers
 
         public IActionResult Details(int ProductId)
         {
-            Product Product = _IProduct.Get(u => u.Id == ProductId, includeProperties: "Category");
-            return View(Product);
+            BuyingCart buyingCart = new()
+            {
+                Product = _IProduct.Get(u => u.Id == ProductId, includeProperties: "Category"),
+                ProductId = ProductId,
+                Count = 1
+                
+            };
+            
+            return View(buyingCart);
         }
 
        
