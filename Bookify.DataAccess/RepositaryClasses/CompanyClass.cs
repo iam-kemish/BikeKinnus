@@ -20,7 +20,7 @@ namespace BikeKinnus.DataAccess.RepositaryClasses
 
         public void Update(Company company)
         {
-            _Db.companies.Update(company);
+            _Db.Companies.Update(company);
         }
     }
 }

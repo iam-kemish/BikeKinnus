@@ -22,6 +22,33 @@ namespace BikeKinnus.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("BikeKinnus.Models.Models.BuyingCart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("BuyingCarts");
+                });
+
             modelBuilder.Entity("BikeKinnus.Models.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -114,7 +141,7 @@ namespace BikeKinnus.DataAccess.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("companies");
+                    b.ToTable("Companies");
 
                     b.HasData(
                         new
@@ -534,6 +561,25 @@ namespace BikeKinnus.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("AppUser");
+                });
+
+            modelBuilder.Entity("BikeKinnus.Models.Models.BuyingCart", b =>
+                {
+                    b.HasOne("BikeKinnus.Models.Models.AppUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BikeKinnus.Models.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("BikeKinnus.Models.Models.Company", b =>

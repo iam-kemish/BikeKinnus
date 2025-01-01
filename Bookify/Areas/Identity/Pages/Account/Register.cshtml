@@ -84,18 +84,17 @@
     </div>
 </div>
 
-
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const roleSelect = document.querySelector('#Input_Role'); 
-        const companyList = document.querySelector('#Input_CompanyId'); 
+        const roleSelect = document.querySelector('#Input.Role');
+        const companyList = document.querySelector('#Input.CompanyId');
 
         roleSelect.addEventListener('change', () => {
-           
+            // Check if the selected role is "Company"
             if (roleSelect.value === 'Company') {
-                companyList.style.display = 'block';
+                companyList.style.display = 'block'; 
             } else {
-                companyList.style.display = 'none';
+                companyList.style.display = 'none'; 
             }
         });
     });

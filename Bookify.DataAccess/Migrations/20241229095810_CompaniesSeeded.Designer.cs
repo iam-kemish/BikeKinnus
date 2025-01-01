@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BikeKinnus.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241220115229_AddedCompanyModel")]
-    partial class AddedCompanyModel
+    [Migration("20241229095810_CompaniesSeeded")]
+    partial class CompaniesSeeded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,6 +94,9 @@ namespace BikeKinnus.DataAccess.Migrations
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("CompanyId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -112,7 +115,41 @@ namespace BikeKinnus.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("companies");
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("Companies");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            City = "Shanghai",
+                            Name = "Tech Solution",
+                            PhoneNumber = "6669990000",
+                            PostalCode = "12121",
+                            State = "IL",
+                            StreetAddress = "123 Tech St"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            City = "Shenzen",
+                            Name = "Vivid Books",
+                            PhoneNumber = "7779990000",
+                            PostalCode = "66666",
+                            State = "IL",
+                            StreetAddress = "999 Vid St"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            City = "GHuangzhou",
+                            Name = "Readers Club",
+                            PhoneNumber = "1113335555",
+                            PostalCode = "99999",
+                            State = "NY",
+                            StreetAddress = "999 Main St"
+                        });
                 });
 
             modelBuilder.Entity("BikeKinnus.Models.Models.Product", b =>
@@ -500,6 +537,15 @@ namespace BikeKinnus.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("AppUser");
+                });
+
+            modelBuilder.Entity("BikeKinnus.Models.Models.Company", b =>
+                {
+                    b.HasOne("BikeKinnus.Models.Models.Company", "company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId");
+
+                    b.Navigation("company");
                 });
 
             modelBuilder.Entity("BikeKinnus.Models.Models.Product", b =>
