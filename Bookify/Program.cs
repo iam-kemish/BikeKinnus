@@ -12,20 +12,29 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options=> options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.LoginPath = $"/Identity/Account/Login";
-    options.LogoutPath = $"/Identity/Account/Logout";
-    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
-});
+
+
+
 ////////////
 //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
 // This was changed to
 
 //this
+
+//Identity initialization
 builder.Services.AddIdentity<IdentityUser,IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 //options => options.SignIn.RequireConfirmedAccount = true, was removed so that user doesnt have to confirm his/her email while logging in.
 ////////////
+///
+//Cookie identity routing configuration always after Identity is initialized.
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Identity/Account/Login";
+    options.LogoutPath = "/Identity/Account/Logout";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+});
+
+
 
 builder.Services.AddScoped<ICategory,CategoryClass>();
 builder.Services.AddScoped<IProduct, ProductClass>();

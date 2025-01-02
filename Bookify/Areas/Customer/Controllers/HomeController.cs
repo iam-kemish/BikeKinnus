@@ -1,6 +1,8 @@
 using BikeKinnus.DataAccess.Repositary;
 using BikeKinnus.Models.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BikeKinnus.Areas.Customer.Controllers
 {
@@ -19,7 +21,7 @@ namespace BikeKinnus.Areas.Customer.Controllers
             IEnumerable<Product> listedProducts = _IProduct.GetAll(includeProperties: "Category").ToList();
             return View(listedProducts);
         }
-
+      
         public IActionResult Details(int ProductId)
         {
             BuyingCart buyingCart = new()
@@ -32,7 +34,17 @@ namespace BikeKinnus.Areas.Customer.Controllers
             
             return View(buyingCart);
         }
+        [HttpPost]
+        [Authorize]
 
+        public IActionResult Details(BuyingCart buyingCart)
+        {
+         
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return View();
+
+        }
        
     }
 }
