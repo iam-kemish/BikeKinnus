@@ -38,15 +38,27 @@ namespace BikeKinnus.Areas.Customer.Controllers
         [HttpPost]
         [Authorize]
 
-        public IActionResult Details(BuyingCart buyingCart)
+       public IActionResult Details(BuyingCart buyingCart)
         {
          
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            buyingCart.ApplicationUserId = userId;
 
+            BuyingCart DbCart = _IBuyingCart.Get(u=>u.ApplicationUserId == userId && u.ProductId == buyingCart.ProductId);
+            if(DbCart != null )
+            {
+                //The same buyingCart already exists in db, so  the posted buying cart quantity is to be added to the existing buyingCart
+                DbCart.Count += buyingCart.Count;
+                //we need to update the cart which is already in database not the one who need to posted.
+                _IBuyingCart.Update(DbCart);
+            }else
+            {
             _IBuyingCart.Add(buyingCart);
+
+            }
             _IBuyingCart.Save();
-            return View();
+            return RedirectToAction(nameof(Index));
 
         }
        
