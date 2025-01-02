@@ -10,10 +10,11 @@ namespace BikeKinnus.Areas.Customer.Controllers
     public class HomeController : Controller
     {
         private readonly IProduct _IProduct;
-
-        public HomeController(ILogger<HomeController> logger,IProduct product)
+        private readonly IBuyingCart _IBuyingCart;
+        public HomeController(ILogger<HomeController> logger,IProduct product, IBuyingCart iBuyingCart)
         {
             _IProduct = product;
+            _IBuyingCart = iBuyingCart;
         }
 
         public IActionResult Index()
@@ -42,6 +43,9 @@ namespace BikeKinnus.Areas.Customer.Controllers
          
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            _IBuyingCart.Add(buyingCart);
+            _IBuyingCart.Save();
             return View();
 
         }

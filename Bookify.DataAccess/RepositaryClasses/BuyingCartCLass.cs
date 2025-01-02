@@ -2,18 +2,13 @@
 using BikeKinnus.Database;
 using BikeKinnus.Models.Models;
 using BikeKinnus.RepositaryClasses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BikeKinnus.DataAccess.RepositaryClasses
 {
-    public class AppUserCLass : Repositary<AppUser>, IAppUser
+    public class BuyingCartClass : Repositary<BuyingCart>, IBuyingCart
     {
         private readonly ApplicationDbContext _Db;
-        public AppUserCLass(ApplicationDbContext Db) : base(Db)
+        public BuyingCartClass(ApplicationDbContext Db) : base(Db)
         {
             _Db = Db;
         }
@@ -23,9 +18,9 @@ namespace BikeKinnus.DataAccess.RepositaryClasses
             _Db.SaveChanges();
         }
 
-        public void Update(AppUser buyingCart)
+        public void Update(BuyingCart buyingCart)
         {
-            _Db.AppUsers.Update(buyingCart);
+            _Db.BuyingCarts.Update(buyingCart);
         }
     }
 }
