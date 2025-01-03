@@ -21,8 +21,8 @@ namespace BikeKinnus.Areas.Customer.Controllers
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             BuyingCartVM resultedDatas = new BuyingCartVM()
             {
-                BuyingCarts = _IBuyingCart.GetAll(u=> u.ApplicationUserId == userId,includeProperties: "Product"),
-                OrderTotal=0
+                BuyingCarts = _IBuyingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Product"),
+                OrderTotal = _IBuyingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Product").Sum(s=> s.Count * s.Product.Price)
            };
             return View(resultedDatas);
         }
