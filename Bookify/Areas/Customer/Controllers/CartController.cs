@@ -32,6 +32,10 @@ namespace BikeKinnus.Areas.Customer.Controllers
             return View(resultedDatas);
         }
 
+        public IActionResult Summary()
+        {
+            return View();
+        }
         public IActionResult Increment(int cartId)
         {
             var cartFromDb = _IBuyingCart.Get(u => u.Id == cartId);

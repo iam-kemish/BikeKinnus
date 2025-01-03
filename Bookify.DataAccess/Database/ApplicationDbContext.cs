@@ -15,6 +15,8 @@ namespace BikeKinnus.Database
         public DbSet<AppUser> AppUsers { get; set; }
         public  DbSet<Company> Companies { get; set; }
         public DbSet<BuyingCart> BuyingCarts { get; set; }
+        public DbSet<OrderDetails> OrderDetails { get; set; }   
+        public DbSet<OrderHeader> OrderHeaders { get; set; }    
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
