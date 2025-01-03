@@ -12,5 +12,6 @@ namespace BikeKinnus.DataAccess.Repositary
     {
         void Update(Company company);
         void Save();
+       
     }
 }

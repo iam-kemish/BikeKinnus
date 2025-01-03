@@ -21,7 +21,7 @@ namespace BikeKinnus.RepositaryClasses
            DbSet.Add(item);
         }
 
-        public T Get(Expression<Func<T, bool>> func, string? includeProperties = null, bool Tracking = false)
+        public T Get(Expression<Func<T, bool>>? filter, string? includeProperties = null, bool Tracking = false)
         {
             if (Tracking)
             {
@@ -33,7 +33,7 @@ namespace BikeKinnus.RepositaryClasses
                         Query = Query.Include(item);
                     }
                 }
-                Query = Query.Where(func);
+                Query = Query.Where(filter);
             return Query.FirstOrDefault();
             }else
             {
@@ -45,14 +45,19 @@ namespace BikeKinnus.RepositaryClasses
                         Query = Query.Include(item);
                     }
                 }
-                Query = Query.Where(func);
+                Query = Query.Where(filter);
                 return Query.FirstOrDefault();
             }
         }
 
-        public IEnumerable<T> GetAll(string? includeProperties = null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties = null)
         {
           IQueryable<T> Query = DbSet;
+            if(filter != null)
+            {
+
+            Query = Query.Where(filter);
+            }
             if (!string.IsNullOrEmpty(includeProperties))
             {
                 foreach (var item in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
