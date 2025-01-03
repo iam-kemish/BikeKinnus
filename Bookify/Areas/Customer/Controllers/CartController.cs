@@ -26,8 +26,12 @@ namespace BikeKinnus.Areas.Customer.Controllers
             BuyingCartVM resultedDatas = new BuyingCartVM()
             {
                 BuyingCarts = _IBuyingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Product,Product.Category").ToList(),
-               
-                OrderTotal = _IBuyingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Product,Product.Category").Sum(s=> s.Count * s.Product.Price)
+                
+               OrderHeader = new()
+               {
+                   OrderTotal = _IBuyingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Product,Product.Category").Sum(s => s.Count * s.Product.Price)
+               }
+             
            };
             return View(resultedDatas);
         }
