@@ -52,7 +52,8 @@ namespace BikeKinnus.Areas.Customer.Controllers
                 DbCart.Count += buyingCart.Count;
                 //we need to update the cart which is already in database not the one who need to posted.
                 _IBuyingCart.Update(DbCart);
-            }else
+            }
+            else
             {
             _IBuyingCart.Add(buyingCart);
 

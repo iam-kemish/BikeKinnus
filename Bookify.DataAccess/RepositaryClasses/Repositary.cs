@@ -21,18 +21,33 @@ namespace BikeKinnus.RepositaryClasses
            DbSet.Add(item);
         }
 
-        public T Get(Expression<Func<T, bool>> func, string? includeProperties = null)
+        public T Get(Expression<Func<T, bool>> func, string? includeProperties = null, bool Tracking = false)
         {
-            IQueryable<T> Query = DbSet;
-            if (!string.IsNullOrEmpty(includeProperties))
+            if (Tracking)
             {
-                foreach (var item in includeProperties.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries))
+                IQueryable<T> Query = DbSet;
+                if (!string.IsNullOrEmpty(includeProperties))
                 {
-                    Query = Query.Include(item);
+                    foreach (var item in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        Query = Query.Include(item);
+                    }
                 }
-            }
-            Query = Query.Where(func);
+                Query = Query.Where(func);
             return Query.FirstOrDefault();
+            }else
+            {
+                IQueryable<T> Query = DbSet.AsNoTracking();
+                if (!string.IsNullOrEmpty(includeProperties))
+                {
+                    foreach (var item in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        Query = Query.Include(item);
+                    }
+                }
+                Query = Query.Where(func);
+                return Query.FirstOrDefault();
+            }
         }
 
         public IEnumerable<T> GetAll(string? includeProperties = null)
