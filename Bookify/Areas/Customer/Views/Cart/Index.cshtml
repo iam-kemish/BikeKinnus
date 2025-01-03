@@ -1,77 +1,66 @@
-﻿
-@model BuyingCartVM
+﻿@model BuyingCartVM
 
-<form method="post">
-    <br />
-    <div class="card shadow border-0">
-        <div class="card-header bg-secondary bg-gradient text-light ml-0 py-4">
-            <div class="row px-4">
-                <div class="col-6">
-                    <h5 class="pt-2 text-white">
-                        Shopping Cart
-                    </h5>
-                </div>
+<form method="post" class="container mt-5">
+    <div class="card shadow-sm border-0">
+        <!-- Header -->
+        <div class="card-header bg-dark text-white py-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Shopping Cart</h4>
+                <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-outline-light btn-sm">Continue Shopping</a>
             </div>
         </div>
-        <div class="card-body my-4">
-            <div class="row">
-            </div>
-            <div class="row mb-3 pb-3">
-                <div class="col-md-2 offset-md-1">
-                    <a href="#" class="btn btn-outline-primary text-uppercase mb-5 btn-sm"><small>Continue Shopping</small></a>
-                </div>
-                <div class="col-md-10 offset-md-1">
-                    <div class="row border-bottom pb-3">
-                        <div class="d-none d-lg-block col-lg-1 text-center py-2">
-                            <img src="https://placehold.co/600x400" class="rounded" width="100%" />
+
+        <!-- Cart Items -->
+        <div class="card-body">
+         
+                @foreach (var item in Model.BuyingCarts)
+                {
+                    <div class="row border-bottom pb-3 mb-3 align-items-center">
+                        <!-- Product Image -->
+                        <div class="col-3 col-md-2 text-center">
+                            <img src="@item.Product.ImageUrl" alt="@item.Product.Title" class="img-fluid rounded" />
                         </div>
-                        <div class="col-12 col-lg-6 pt-md-3">
-                            <h5 class="text-uppercase text-secondary"><strong>Title</strong></h5>
-                            <p><small></small></p>
+
+                        <!-- Product Details -->
+                        <div class="col-6 col-md-6">
+                            <h6 class="text-uppercase text-dark mb-1"><strong>@item.Product.Title</strong></h6>
+                            <p class="text-muted mb-0">Category: @item.Product.Category.Name</p>
                         </div>
-                        <div class="col-12  col-lg-5 text-center row">
-                            <div class="col-3 text-md-right pt-2 pt-md-4">
-                                <h6 class="fw-semibold">
-                                    Price
-                                    <span class="text-muted">&nbsp;x&nbsp;</span>Count
-                                </h6>
-                            </div>
-                            <div class="col-6 col-sm-4 col-lg-6 pt-2">
-                                <div class="w-75 btn-group" role="group">
-                                    <a class="btn btn-outline-primary bg-gradient py-2">
-                                        <i class="bi bi-plus-square"></i>
-                                    </a> &nbsp;
-                                    <a class="btn btn-outline-primary bg-gradient py-2">
-                                        <i class="bi bi-dash-square"></i>
+
+                        <!-- Quantity and Actions -->
+                        <div class="col-3 col-md-4 text-end">
+                            <div class="d-flex align-items-center justify-content-end">
+                                <span class="text-muted me-2">Price: Rs. @item.Product.Price</span>
+                                <div class="btn-group btn-group-sm me-2" role="group">
+                                <a asp-route-cartId="@item.Id" asp-action="Increment" class="btn btn-outline-success" title="Increase Quantity">
+                                        <i class="bi bi-plus-circle"></i>
+                                    </a>
+                                    <span class="mx-2">@item.Count</span>
+                                <a asp-route-cartId="@item.Id" asp-action="Decrement" class="btn btn-outline-danger" title="Decrease Quantity">
+                                        <i class="bi bi-dash-circle"></i>
                                     </a>
                                 </div>
-                            </div>
-                            <div class="col-3 col-sm-4 col-lg-2 offset-lg-1 text-right pt-2">
-                                <a href="#" class="btn btn-danger bg-gradient py-2 ">
-                                    <i class="bi bi-trash-fill"></i>
-                                </a>
+                            <a asp-route-cartId="@item.Id" asp-action="Remove" class="btn btn-sm btn-outline-danger" title="Remove Item">
+                                <i class="bi bi-trash"></i>
+                            </a>
                             </div>
                         </div>
                     </div>
+                }
+           
+        </div>
+
+        <!-- Cart Summary -->
+        <div class="card-footer bg-light">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h5 class="text-uppercase text-dark">Total (NPR):</h5>
+                    <h3 class="text-dark fw-bold">Rs. @Model.OrderTotal</h3>
                 </div>
-            </div>
-            <div class="card-footer bg-white border-0">
-                <div class="row">
-                    <div class="col-md-4 offset-md-4">
-                        <ul class="list-group mb-4">
-                            <li class="d-flex justify-content-between align-items-center">
-                                <h5 class="text-dark fw-semibold text-uppercase"> Total (NPR)</h5>
-                                <h4 class="text-dark fw-bolder">Rs.@Model.OrderTotal</h4>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2 offset-md-5">
-                        <a href="#" class="btn btn-primary border-0 bg-gradient w-100 py-2">Summary</a>
-                    </div>
+                <div class="col-md-6 text-end">
+                    <a href="#" class="btn btn-primary btn-lg w-50">Proceed to Checkout</a>
                 </div>
             </div>
         </div>
+    </div>
 </form>
-
