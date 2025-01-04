@@ -13,10 +13,12 @@ namespace BikeKinnus.Areas.Customer.Controllers
     {
         private readonly IBuyingCart _IBuyingCart;
         private readonly ICategory _ICategory;
-        public CartController(IBuyingCart buyingCart,ICategory category)
+        private readonly IAppUser _IAppUser;
+        public CartController(IBuyingCart buyingCart,ICategory category,IAppUser appUser)
         {
             _IBuyingCart = buyingCart;
             _ICategory = category;
+            _IAppUser = appUser;
         }
     
         public IActionResult Index()
@@ -38,8 +40,29 @@ namespace BikeKinnus.Areas.Customer.Controllers
 
         public IActionResult Summary()
         {
-            return View();
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            BuyingCartVM buyingCartVM = new BuyingCartVM()
+            {
+                BuyingCarts = _IBuyingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Product,Product.Category").ToList(),
+
+                OrderHeader = new()
+                {
+                    OrderTotal = _IBuyingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Product,Product.Category").Sum(s => s.Count * s.Product.Price)
+                }
+
+            };
+
+            buyingCartVM.OrderHeader.AppUser = _IAppUser.Get(u => u.Id == userId);
+            buyingCartVM.OrderHeader.Name = buyingCartVM.OrderHeader.AppUser.Name;
+            buyingCartVM.OrderHeader.PhoneNumber = buyingCartVM.OrderHeader.AppUser.PhoneNumber;
+            buyingCartVM.OrderHeader.Age = buyingCartVM.OrderHeader.AppUser.Age;
+            buyingCartVM.OrderHeader.City = buyingCartVM.OrderHeader.AppUser.City;
+            buyingCartVM.OrderHeader.Email = buyingCartVM.OrderHeader.AppUser.Email;
+
+            return View(buyingCartVM);
         }
+       
         public IActionResult Increment(int cartId)
         {
             var cartFromDb = _IBuyingCart.Get(u => u.Id == cartId);

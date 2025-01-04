@@ -35,7 +35,7 @@ namespace BikeKinnus.Models.Models
         [Required]
         public string PhoneNumber { get; set; }
         [Required]
-        public string StreetAddress { get; set; }
+        public int Age { get; set; }
         [Required]
         public string City { get; set; }
         [Required]
@@ -44,5 +44,8 @@ namespace BikeKinnus.Models.Models
         public string PostalCode { get; set; }
         [Required]
         public string Name { get; set; }
+
+        [Required]
+        public string Email { get; set; }
     }
 }

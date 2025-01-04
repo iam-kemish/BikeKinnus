@@ -79,11 +79,13 @@ namespace BikeKinnus.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
-            public string? Name { get; set; }
-            public string? PhoneNumber { get; set; }
-            public string? City { get; set; }
-            public int? Age { get; set; }
-            public string? Role { get; set; }
+            public string Name { get; set; }
+            public string PhoneNumber { get; set; }
+            public string City { get; set; }
+            public int Age { get; set; }
+
+            public string State { get; set; }
+            public string Role { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList {  get; set; }
             public int? CompanyId { get; set; }
@@ -130,6 +132,7 @@ namespace BikeKinnus.Areas.Identity.Pages.Account
                 user.Age = Input.Age;
                 user.Name = Input.Name;
                 user.City = Input.City;
+                user.State = Input.State;
                 user.PhoneNumber = Input.PhoneNumber;
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
