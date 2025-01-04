@@ -13,6 +13,8 @@ namespace BikeKinnus.Models.Models
         public int Age { get; set; }
         [Required]
         public string State { get; set; }
-       
+
+        public string PostalCode { get; set; }
+
     }
 }

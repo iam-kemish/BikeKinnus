@@ -84,6 +84,7 @@ namespace BikeKinnus.Areas.Identity.Pages.Account
             public string City { get; set; }
             public int Age { get; set; }
 
+            public string PostalCode { get; set; }
             public string State { get; set; }
             public string Role { get; set; }
             [ValidateNever]
@@ -134,6 +135,7 @@ namespace BikeKinnus.Areas.Identity.Pages.Account
                 user.City = Input.City;
                 user.State = Input.State;
                 user.PhoneNumber = Input.PhoneNumber;
+                user.PostalCode = Input.PostalCode;
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);

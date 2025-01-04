@@ -41,6 +41,9 @@ builder.Services.AddScoped<IProduct, ProductClass>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<ICompany, CompanyClass>();
 builder.Services.AddScoped<IBuyingCart, BuyingCartClass>();
+builder.Services.AddScoped<IAppUser, AppUserClass>();
+builder.Services.AddScoped<IOrderHeader, OrderHeaderClass>();
+builder.Services.AddScoped<IOrderDetail, OrderDetailsClass>();
 builder.Services.AddRazorPages();
 var app = builder.Build();
 

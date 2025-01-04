@@ -21,7 +21,7 @@
                 <form id="registerForm" class="row" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                     <h3 class="border-bottom pb-3 mb-4 text-secondary text-center">Create a new account.</h3>
                     <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                    <div class="form-floating mb-3 col-md-12">
+                    <div class="form-floating mb-3 col-md-6">
                         <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
                         <label asp-for="Input.Email" class="ms-2 text-muted">Email</label>
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
@@ -31,11 +31,7 @@
                         <label asp-for="Input.Name" class="ms-2 text-muted">Name</label>
                         <span asp-validation-for="Input.Name" class="text-danger"></span>
                     </div>
-                    <div class="form-floating mb-3 col-md-6">
-                        <input asp-for="Input" class="form-control" placeholder="Enter city" />
-                        <label asp-for="Input.City" class="ms-2 text-muted">City</label>
-                        <span asp-validation-for="Input.City" class="text-danger"></span>
-                    </div>
+                   
                     <div class="form-floating mb-3 col-md-6">
                         <input asp-for="Input.Age" class="form-control" placeholder="Age" />
                         <label asp-for="Input.Age" class="ms-2 text-muted">Age</label>
@@ -45,6 +41,16 @@
                         <input asp-for="Input.State" class="form-control" placeholder="Enter state" />
                         <label asp-for="Input.State" class="ms-2 text-muted">State</label>
                         <span asp-validation-for="Input.State" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3 col-md-6">
+                        <input asp-for="Input.City" class="form-control" placeholder="Enter city" />
+                        <label asp-for="Input.City" class="ms-2 text-muted">City</label>
+                        <span asp-validation-for="Input.City" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3 col-md-6">
+                        <input asp-for="Input.PostalCode" class="form-control" placeholder="Enter postal code" />
+                        <label asp-for="Input.PostalCode" class="ms-2 text-muted">Postal code</label>
+                        <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3 col-md-6">
                         <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />

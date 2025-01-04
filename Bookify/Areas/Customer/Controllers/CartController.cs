@@ -59,6 +59,8 @@ namespace BikeKinnus.Areas.Customer.Controllers
             buyingCartVM.OrderHeader.Age = buyingCartVM.OrderHeader.AppUser.Age;
             buyingCartVM.OrderHeader.City = buyingCartVM.OrderHeader.AppUser.City;
             buyingCartVM.OrderHeader.Email = buyingCartVM.OrderHeader.AppUser.Email;
+            buyingCartVM.OrderHeader.State = buyingCartVM.OrderHeader.AppUser.State;
+            buyingCartVM.OrderHeader.PostalCode = buyingCartVM.OrderHeader.AppUser.PostalCode;
 
             return View(buyingCartVM);
         }

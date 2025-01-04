@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace BikeKinnus.DataAccess.RepositaryClasses
 {
-    public class BuyingCartCLass : Repositary<AppUser>, IAppUser
+    public class AppUserClass : Repositary<AppUser>, IAppUser
     {
         private readonly ApplicationDbContext _Db;
-        public BuyingCartCLass(ApplicationDbContext Db) : base(Db)
+        public AppUserClass(ApplicationDbContext Db) : base(Db)
         {
             _Db = Db;
         }
