@@ -1,4 +1,5 @@
 ﻿using BikeKinnus.DataAccess.Repositary;
+using BikeKinnus.Models.Models;
 using BikeKinnus.Models.Models.ViewModels;
 using BikeKinnus.Repositary;
 using Microsoft.AspNetCore.Authorization;
@@ -12,13 +13,15 @@ namespace BikeKinnus.Areas.Customer.Controllers
     public class CartController : Controller
     {
         private readonly IBuyingCart _IBuyingCart;
-        private readonly ICategory _ICategory;
+        private readonly IOrderDetail _IOrderDetail;
         private readonly IAppUser _IAppUser;
-        public CartController(IBuyingCart buyingCart,ICategory category,IAppUser appUser)
+        private readonly IOrderHeader _IOrderHeader;
+        public CartController(IBuyingCart buyingCart,IAppUser appUser, IOrderHeader orderHeader, IOrderDetail orderDetail)
         {
             _IBuyingCart = buyingCart;
-            _ICategory = category;
+            _IOrderHeader = orderHeader;
             _IAppUser = appUser;
+            _IOrderDetail = orderDetail;
         }
     
         public IActionResult Index()
@@ -64,7 +67,58 @@ namespace BikeKinnus.Areas.Customer.Controllers
 
             return View(buyingCartVM);
         }
-       
+
+
+        [HttpPost]
+        [ActionName("Summary")]
+        public IActionResult SummaryPOST(BuyingCartVM buyingCartVM)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+         
+            buyingCartVM.BuyingCarts = _IBuyingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Product,Product.Category").ToList();
+            buyingCartVM.OrderHeader.OrderDate = DateTime.UtcNow;
+            buyingCartVM.OrderHeader.AppUserId = userId;
+            buyingCartVM.OrderHeader.OrderTotal = _IBuyingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Product,Product.Category").Sum(s => s.Count * s.Product.Price);
+            buyingCartVM.OrderHeader.AppUser = _IAppUser.Get(u => u.Id == userId);
+            buyingCartVM.OrderHeader.Name = buyingCartVM.OrderHeader.AppUser.Name;
+            buyingCartVM.OrderHeader.PhoneNumber = buyingCartVM.OrderHeader.AppUser.PhoneNumber;
+            buyingCartVM.OrderHeader.Age = buyingCartVM.OrderHeader.AppUser.Age;
+            buyingCartVM.OrderHeader.City = buyingCartVM.OrderHeader.AppUser.City;
+            buyingCartVM.OrderHeader.Email = buyingCartVM.OrderHeader.AppUser.Email;
+            buyingCartVM.OrderHeader.State = buyingCartVM.OrderHeader.AppUser.State;
+            buyingCartVM.OrderHeader.PostalCode = buyingCartVM.OrderHeader.AppUser.PostalCode;
+
+            if (buyingCartVM.OrderHeader.AppUser.CompanyId.GetValueOrDefault() ==0) {
+                //This is a regular costumer account
+                buyingCartVM.OrderHeader.PaymentStatus = StaticDetails.StatusPending;
+                buyingCartVM.OrderHeader.OrderStatus = StaticDetails.StatusPending;
+            }else
+            {
+                //This is a company account
+                buyingCartVM.OrderHeader.PaymentStatus = StaticDetails.PaymentStatusDelayedPayment;
+                buyingCartVM.OrderHeader.OrderStatus = StaticDetails.StatusApproved;
+            }
+            _IOrderHeader.Add(buyingCartVM.OrderHeader);
+            _IOrderHeader.Save();
+            foreach (var item in buyingCartVM.BuyingCarts)
+            {
+                OrderDetails orderDetails = new()
+                {
+                    ProductId = item.ProductId,
+                    OrderHeaderId = buyingCartVM.OrderHeader.Id,
+                    Price = item.Product.Price,
+                    Count=item.Count
+                };
+                _IOrderDetail.Add(orderDetails);
+                _IOrderDetail.Save();
+                
+            }
+            return View(buyingCartVM);
+
+            }
+
         public IActionResult Increment(int cartId)
         {
             var cartFromDb = _IBuyingCart.Get(u => u.Id == cartId);
