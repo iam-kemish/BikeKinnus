@@ -90,19 +90,24 @@
     </div>
 </div>
 
+@section Scripts  {
+    <partial name="_ValidationScriptsPartial" />
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const roleSelect = document.querySelector('#Input.Role');
-        const companyList = document.querySelector('#Input.CompanyId');
+   
+        document.addEventListener('DOMContentLoaded', () => {
+            const roleSelect = document.querySelector('#Input_Role');
+            const companyList = document.querySelector('#Input_CompanyId');
 
-        roleSelect.addEventListener('change', () => {
-            // Check if the selected role is "Company"
-            if (roleSelect.value === 'Company') {
-                companyList.style.display = 'block'; 
-            } else {
-                companyList.style.display = 'none'; 
-            }
+            roleSelect.addEventListener('change', () => {
+                // Check if the selected value is "Company"
+                if (roleSelect.value === 'Company') {
+                    companyList.style.display = 'block';
+                } else {
+                    companyList.style.display = 'none';
+                }
+            });
         });
-    });
+
 
 </script>
+}

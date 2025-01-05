@@ -94,24 +94,29 @@
                                     <span asp-validation-for="OrderHeader.Age" class="text-danger"></span>
                                 </div>
 						</div>
-						<div class="col-12 col-lg-5 offset-lg-1">
-							<h4 class="d-flex justify-content-between align-items-center mb-3">
-								<span class="text-info">Order Summary:</span>
-							</h4>
-							<ul class="list-group mb-3">
-								<li class="list-group-item d-flex justify-content-between">
-									<div>
-										<h6 class="my-0">Title</h6>
-										<small class="text-muted">Quantity: Count</small>
-									</div>
-									<span class="text-muted">Price * Count </span>
-								</li>
-								<li class="list-group-item d-flex justify-content-between bg-light">
-									<small class="text-info">Total (NRP)</small>
-									<strong class="text-info">Rs.</strong>
-								</li>
-							</ul>
-						</div>
+                            <div class="col-12 col-lg-5 offset-lg-1">
+                                <h4 class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+                                    <span class="text-info">Order Summary</span>
+                                </h4>
+
+                                <ul class="list-group mb-4">
+                                    @foreach (var item in Model.BuyingCarts)
+                                    {
+                                        <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                                            <div>
+                                                <h6 class="my-0">@item.Product.Title</h6>
+                                                <small class="text-muted">Quantity: @item.Count</small>
+                                            </div>
+                                            <span class="text-muted">NRP @String.Format("{0:0.00}", item.Product.Price * item.Count)</span>
+                                        </li>
+                                    }
+                                    <li class="list-group-item d-flex justify-content-between align-items-center py-3 bg-light">
+                                        <small class="text-info font-weight-bold">Total (NRP)</small>
+                                        <strong class="text-info">Rs. @Model.OrderHeader.OrderTotal</strong>
+                                    </li>
+                                </ul>
+                            </div>
+
 					</div>
 				</div>
 			</div>
