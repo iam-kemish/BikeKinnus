@@ -1,5 +1,6 @@
 ﻿using BikeKinnus.DataAccess.Repositary;
 using BikeKinnus.Models.Models;
+using BikeKinnus.Models.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BikeKinnus.Areas.Admin.Controllers
@@ -17,8 +18,12 @@ namespace BikeKinnus.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            List <OrderHeader> OrderHeaders = _IOrderHeader.GetAll(includeProperties: "AppUser").ToList();
-            return View(OrderHeaders);
+            OrderVM orderVM = new()
+            {
+                OrderHeaders = _IOrderHeader.GetAll(includeProperties: "AppUser").ToList(),
+                OrderDetails = _IOrderDetail.GetAll(includeProperties: "OrderHeader").ToList()
+            };
+            return View(orderVM);
         }
     }
 }

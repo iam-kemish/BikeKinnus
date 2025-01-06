@@ -1,1 +1,44 @@
-﻿
+﻿@model OrderVM
+
+@{
+    ViewData["Title"] = "Orders List";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center">Orders List</h1>
+    <table class="table table-bordered table-striped mt-4">
+        <thead class="thead-dark">
+            <tr>
+                <th>Order ID</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Order Status</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+          
+                @foreach (var order in Model.OrderDetails)
+                {
+                    <tr>
+                        <td>@order.Id</td>
+                        <td>@order.OrderHeader.Email</td>
+                        <td>@order.OrderHeader.PhoneNumber</td>
+                        <td>@order.OrderHeader.OrderStatus</td>
+                        <td>@order.OrderHeader.OrderTotal.ToString("C")</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@order.Id" class="btn btn-info btn-sm">View</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="text-center">No orders found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
