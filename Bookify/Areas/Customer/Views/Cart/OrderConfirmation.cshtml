@@ -1,0 +1,28 @@
+﻿@model int
+
+@{
+    ViewData["Title"] = "Order Confirmation";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1 class="display-4">Order Confirmation</h1>
+            <p class="lead">
+                Thank you for your purchase! Your order has been successfully placed.
+            </p>
+            <p>
+                <strong>Order ID:</strong> @Model
+            </p>
+            <p>
+                You will receive an email with the order details and tracking information shortly.
+            </p>
+            <a href="@Url.Action("Index", "Home", new { area = "" })" class="btn btn-primary mt-3">
+                Return to Home
+            </a>
+            <a href="@Url.Action("Index", "Cart", new { area = "Customer" })" class="btn btn-secondary mt-3">
+                View More Products
+            </a>
+        </div>
+    </div>
+</div>
