@@ -1,11 +1,60 @@
 ﻿@model OrderVM
 
 @{
-    ViewData["Title"] = "Orders List";
+    var status = Context.Request.Query["status"];
+    var pending = "text-primary";
+    var inprocess = "text-primary";
+    var completed = "text-primary";
+    var approved = "text-primary";
+    var all = "text-primary";
+
+    // Apply different CSS classes based on the status query parameter
+    switch (status.ToString().ToLower())
+    {
+        case "pending":
+            pending = "active text-success"; 
+            break;
+        case "inprocess":
+            inprocess = "active text-warning"; 
+            break;
+        case "completed":
+            completed = "active text-success"; 
+            break;
+        case "approved":
+            approved = "active text-info"; 
+            break;
+        case "all":
+            all = "active text-dark"; 
+            break;
+        default:
+            break;
+    }
 }
+
+
 
 <div class="container mt-5">
     <h1 class="text-center">Orders List</h1>
+    <div class="d-flex justify-content-between pb-5 pt-2">
+        <span></span>
+        <ul class="list-group list-group-horizontal-sm">
+            <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="inprocess">
+            <li class="list-group-item @inprocess">In Process</li>
+            </a>
+            <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="pending">
+            <li class="list-group-item @pending">Payment Pending</li>
+            </a>
+            <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="completed">
+            <li class="list-group-item @completed">Completed</li>
+            </a>
+            <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="approved">
+            <li class="list-group-item @approved">Approved</li>
+            </a>
+            <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="all">
+            <li class="list-group-item @all">All</li>
+            </a>
+        </ul>
+    </div>
     <table class="table table-bordered table-striped mt-4">
         <thead class="thead-dark">
             <tr>
@@ -26,7 +75,7 @@
                         <td>@order.OrderHeader.Email</td>
                         <td>@order.OrderHeader.PhoneNumber</td>
                         <td>@order.OrderHeader.OrderStatus</td>
-                        <td>@order.OrderHeader.OrderTotal.ToString("C")</td>
+                        <td>Rs.@order.OrderHeader.OrderTotal</td>
                         <td>
                             <a asp-action="Details" asp-route-id="@order.Id" class="btn btn-info btn-sm">View</a>
                         </td>
