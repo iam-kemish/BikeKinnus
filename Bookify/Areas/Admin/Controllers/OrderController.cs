@@ -28,24 +28,24 @@ namespace BikeKinnus.Areas.Admin.Controllers
                 switch (status.ToLower())
                 {
                     case "pending":
-                        orderHeaders = orderHeaders.Where(o => o.OrderStatus.Equals("Pending", StringComparison.OrdinalIgnoreCase)).ToList();
+                        orderHeaders = orderHeaders.Where(o => o.OrderStatus == StaticDetails.StatusPending).ToList();
                         break;
                     case "inprocess":
-                        orderHeaders = orderHeaders.Where(o => o.OrderStatus.Equals("InProcess", StringComparison.OrdinalIgnoreCase)).ToList();
+                        orderHeaders = orderHeaders.Where(o => o.OrderStatus == StaticDetails.StatusInProcess).ToList();
                         break;
                     case "completed":
-                        orderHeaders = orderHeaders.Where(o => o.OrderStatus.Equals("Completed", StringComparison.OrdinalIgnoreCase)).ToList();
+                        orderHeaders = orderHeaders.Where(o => o.OrderStatus == StaticDetails.StatusShipped).ToList();
                         break;
                     case "approved":
-                        orderHeaders = orderHeaders.Where(o => o.OrderStatus.Equals("Approved", StringComparison.OrdinalIgnoreCase)).ToList();
+                        orderHeaders = orderHeaders.Where(o => o.OrderStatus == StaticDetails.StatusApproved).ToList();
                         break;
                     case "all":
-                        // No filtering needed for "all"
-                        break;
+                        break; // No filtering for "all"
                     default:
-                        orderHeaders = new List<OrderHeader>(); // Empty list for unknown status
+                        orderHeaders = new List<OrderHeader>();
                         break;
                 }
+
             }
 
             // Filter OrderDetails to match the filtered OrderHeaders

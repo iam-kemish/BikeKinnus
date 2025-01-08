@@ -42,5 +42,7 @@ namespace BikeKinnus.Models.Models
 
         [Required]
         public string Email { get; set; }
+
+       
     }
 }
