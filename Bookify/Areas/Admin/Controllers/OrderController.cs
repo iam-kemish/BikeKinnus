@@ -20,7 +20,7 @@ namespace BikeKinnus.Areas.Admin.Controllers
         {
             // Retrieve all order headers and order details
             var orderHeaders = _IOrderHeader.GetAll(includeProperties: "AppUser").ToList();
-            var orderDetails = _IOrderDetail.GetAll(includeProperties: "Product").ToList();
+            var orderDetails = _IOrderDetail.GetAll(includeProperties: "Product,OrderHeader").ToList();
             // Filter orders based on the status parameter
             if (!string.IsNullOrEmpty(status))
             {
@@ -65,7 +65,7 @@ namespace BikeKinnus.Areas.Admin.Controllers
             OrderVM orderVM = new()
             {
                 orderHeader = _IOrderHeader.Get(u => u.Id == orderId, includeProperties: "AppUser"),
-                OrderDetail = _IOrderDetail.GetAll(u => u.OrderHeaderId == orderId, includeProperties: "Product")
+                OrderDetail = _IOrderDetail.GetAll(u => u.OrderHeaderId == orderId, includeProperties: "Product,OrderHeader")
             };
             if(orderVM.orderHeader == null)
             {
