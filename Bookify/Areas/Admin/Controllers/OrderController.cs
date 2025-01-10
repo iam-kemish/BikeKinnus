@@ -20,8 +20,7 @@ namespace BikeKinnus.Areas.Admin.Controllers
         {
             // Retrieve all order headers and order details
             var orderHeaders = _IOrderHeader.GetAll(includeProperties: "AppUser").ToList();
-            var orderDetails = _IOrderDetail.GetAll(includeProperties: "OrderHeader").ToList();
-
+            var orderDetails = _IOrderDetail.GetAll(includeProperties: "Product").ToList();
             // Filter orders based on the status parameter
             if (!string.IsNullOrEmpty(status))
             {
@@ -42,25 +41,37 @@ namespace BikeKinnus.Areas.Admin.Controllers
                     case "all":
                         break; // No filtering for "all"
                     default:
-                        orderHeaders = new List<OrderHeader>();
+                        orderHeaders = new List<OrderHeader>(); // Return empty list for invalid status
                         break;
                 }
+                orderDetails = orderDetails
+   .Where(od => orderHeaders.Any(oh => oh.Id == od.OrderHeaderId))
+   .ToList();
 
+                // Use ViewBag to pass the list of order headers for the Index page
             }
-
-            // Filter OrderDetails to match the filtered OrderHeaders
-            orderDetails = orderDetails.Where(orderDetail => orderHeaders.Any(orderheader => orderheader.Id == orderDetail.OrderHeaderId)).ToList();
-
-            // Create and populate the OrderVM
-            OrderVM orderVM = new()
-            {
-                OrderHeaders = orderHeaders,
-                OrderDetails = orderDetails
-            };
-
+                OrderVM orderVM = new()
+                {
+                    OrderDetail = orderDetails,
+                    OrderHeader = orderHeaders
+                };
             return View(orderVM);
+
         }
 
 
+        public IActionResult Details(int orderId)
+        {
+            OrderVM orderVM = new()
+            {
+                orderHeader = _IOrderHeader.Get(u => u.Id == orderId, includeProperties: "AppUser"),
+                OrderDetail = _IOrderDetail.GetAll(u => u.OrderHeaderId == orderId, includeProperties: "Product")
+            };
+            if(orderVM.orderHeader == null)
+            {
+                return NotFound();
+            }
+            return View(orderVM);
+        }
+        }
     }
-}

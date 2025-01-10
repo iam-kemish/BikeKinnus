@@ -1,0 +1,54 @@
+﻿@model OrderVM
+
+<div class="container mt-5">
+    <h1 class="text-center">Order Details</h1>
+
+    <!-- Order Header Section -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3>Order Summary</h3>
+        </div>
+        <div class="card-body">
+            <p><strong>Order ID:</strong> @Model.orderHeader.Id</p>
+            <p><strong>Customer Name:</strong> @Model.orderHeader.AppUser.Name</p>
+            <p><strong>Email:</strong> @Model.orderHeader.AppUser.Email</p>
+            <p><strong>Phone:</strong> @Model.orderHeader.PhoneNumber</p>
+            <p><strong>Order Date:</strong> @Model.orderHeader.OrderDate.ToShortDateString()</p>
+            <p><strong>Status:</strong> @Model.orderHeader.OrderStatus</p>
+            <p><strong>Total:</strong> Rs.@Model.orderHeader.OrderTotal</p>
+        </div>
+    </div>
+
+    <!-- Order Details Section -->
+    <h3 class="text-center">Order Items</h3>
+    <table class="table table-bordered table-striped mt-4">
+        <thead class="thead-dark">
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.OrderDetail != null && Model.OrderDetail.Any())
+            {
+                foreach (var item in Model.OrderDetail)
+                {
+                    <tr>
+                        <td>@item.Product.Title</td>
+                        <td>@item.Count</td>
+                        <td>Rs.@item.Price</td>
+                        <td>Rs.@(item.Count * item.Price)</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" class="text-center">No items found for this order.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

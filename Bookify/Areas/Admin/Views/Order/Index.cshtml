@@ -12,26 +12,24 @@
     switch (status.ToString().ToLower())
     {
         case "pending":
-            pending = "active text-success"; 
+            pending = "active text-success";
             break;
         case "inprocess":
-            inprocess = "active text-warning"; 
+            inprocess = "active text-warning";
             break;
         case "completed":
-            completed = "active text-success"; 
+            completed = "active text-success";
             break;
         case "approved":
-            approved = "active text-info"; 
+            approved = "active text-info";
             break;
         case "all":
-            all = "active text-dark"; 
+            all = "active text-dark";
             break;
         default:
             break;
     }
 }
-
-
 
 <div class="container mt-5">
     <h1 class="text-center">Orders List</h1>
@@ -67,17 +65,18 @@
             </tr>
         </thead>
         <tbody>
-          
-                @foreach (var order in Model.OrderDetails)
+            @if (Model.OrderHeader != null && Model.OrderHeader.Any())
+            {
+                foreach (var item in Model.OrderHeader)
                 {
                     <tr>
-                        <td>@order.Id</td>
-                        <td>@order.OrderHeader.Email</td>
-                        <td>@order.OrderHeader.PhoneNumber</td>
-                        <td>@order.OrderHeader.OrderStatus</td>
-                        <td>Rs.@order.OrderHeader.OrderTotal</td>
+                        <td>@item.Id</td>
+                        <td>@item.AppUser.Email</td>
+                        <td>@item.PhoneNumber</td>
+                        <td>@item.OrderStatus</td>
+                        <td>Rs.@item.OrderTotal</td>
                         <td>
-                            <a asp-action="Details" asp-route-id="@order.Id" class="btn btn-info btn-sm">View</a>
+                            <a asp-action="Details" asp-route-orderId="@item.Id" class="btn btn-info btn-sm">View</a>
                         </td>
                     </tr>
                 }
@@ -89,5 +88,6 @@
                 </tr>
             }
         </tbody>
+
     </table>
 </div>
