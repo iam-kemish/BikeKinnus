@@ -1,5 +1,6 @@
 ﻿@model OrderVM
 <form method="post">
+    <input asp-for="orderHeader.Id" hidden />
     <br />
     <div class="container">
         <div class="card">
@@ -90,7 +91,7 @@
                                 </div>
                             </div>
                             <div class="row my-1">
-                                <div class="col-3">Zip Code</div>
+                                <div class="col-3">Postal Code</div>
                                 <div class="col-9">
                                     @if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
                                     {
@@ -108,12 +109,12 @@
                                 <div class="col-9">
                                     @if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
                                     {
-                                    <input asp-for="orderHeader.AppUser.Email"  type="text" class="form-control" />
-                                        <span asp-validation-for="orderHeader.AppUser.Email" class="text-danger"></span>
+                                    <input asp-for="orderHeader.Email"  type="text" class="form-control" />
+                                        <span asp-validation-for="orderHeader.Email" class="text-danger"></span>
                                     }else
                                     {
-                                        <input asp-for="orderHeader.AppUser.Email" type="text" class="form-control" />
-                                        <span asp-validation-for="orderHeader.AppUser.Email" class="text-danger"></span>
+                                        <input asp-for="orderHeader.Email" type="text" class="form-control" />
+                                        <span asp-validation-for="orderHeader.Email" class="text-danger"></span>
                                     }
                                 </div>
                             </div>
@@ -188,28 +189,20 @@
                                 </div>
                             
                             <div class="row my-1">
+
                                 @if (Model.orderHeader.SessionId == null)
                                 {
                                     <div class="col-3">Payment Due Date</div>
                                     <div class="col-9">
-                                        @if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
-                                        {
-                                            <input value="@Model.orderHeader.PaymentDueDate.ToShortDateString()"  type="text" class="form-control" />
-                                        }
-                                        else
-                                        {
-                                            
-                                        <input value="@Model.orderHeader.PaymentDueDate.ToShortDateString()" type="text" class="form-control" readonly/>
-                                        }
-
-                                        
+                                        <input value="@Model.orderHeader.PaymentDueDate.ToShortDateString()" readonly type="text" class="form-control" />
                                     </div>
+
                                 }
                                 else
                                 {
                                     <div class="col-3">Payment Date</div>
                                     <div class="col-9">
-                                        <input value="@Model.orderHeader.PaymentDate.ToShortDateString()"  type="text" class="form-control" />
+                                        <input value="@Model.orderHeader.PaymentDate.ToShortDateString()" readonly type="text" class="form-control" />
                                     </div>
                                 }
                             </div>
@@ -226,7 +219,7 @@
                             </div>
                             @if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
                                     {
-                            <input type="submit" class="btn btn-warning form-control my-1" value="Update Order Details" />
+                                <button type="submit" asp-action="UpdateOrderHeaderDetails" class="btn btn-warning form-control my-1">Update Order Details</button>
                                     }
                         </div>
                         <div class="col-12 col-lg-5 offset-lg-1">

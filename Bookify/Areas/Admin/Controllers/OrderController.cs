@@ -1,6 +1,7 @@
 ﻿using BikeKinnus.DataAccess.Repositary;
 using BikeKinnus.Models.Models;
 using BikeKinnus.Models.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BikeKinnus.Areas.Admin.Controllers
@@ -10,11 +11,13 @@ namespace BikeKinnus.Areas.Admin.Controllers
     {
         private readonly IOrderHeader _IOrderHeader;
         private readonly IOrderDetail _IOrderDetail;
-
+        [BindProperty]
+        public OrderVM OrderVM { get; set; }
         public OrderController(IOrderDetail orderDetail, IOrderHeader orderHeader)
         {
             _IOrderHeader = orderHeader;
             _IOrderDetail = orderDetail;
+
         }
         public IActionResult Index(string status)
         {
@@ -50,11 +53,11 @@ namespace BikeKinnus.Areas.Admin.Controllers
 
                 // Use ViewBag to pass the list of order headers for the Index page
             }
-                OrderVM orderVM = new()
-                {
-                    OrderDetail = orderDetails,
-                    OrderHeader = orderHeaders
-                };
+            OrderVM orderVM = new()
+            {
+                OrderDetail = orderDetails,
+                OrderHeader = orderHeaders
+            };
             return View(orderVM);
 
         }
@@ -62,16 +65,57 @@ namespace BikeKinnus.Areas.Admin.Controllers
 
         public IActionResult Details(int orderId)
         {
-            OrderVM orderVM = new()
+            OrderVM = new()
             {
                 orderHeader = _IOrderHeader.Get(u => u.Id == orderId, includeProperties: "AppUser"),
                 OrderDetail = _IOrderDetail.GetAll(u => u.OrderHeaderId == orderId, includeProperties: "Product,OrderHeader")
             };
-            if(orderVM.orderHeader == null)
+            if (OrderVM.orderHeader == null)
             {
                 return NotFound();
             }
-            return View(orderVM);
+            return View(OrderVM);
         }
+
+
+        [HttpPost]
+        [Authorize(Roles = StaticDetails.Role_Admin + (",") + StaticDetails.Role_Employee)]
+        [HttpPost]
+        [Authorize(Roles = StaticDetails.Role_Admin + "," + StaticDetails.Role_Employee)]
+        public IActionResult UpdateOrderHeaderDetails()
+        {
+            var OrderHeaderFromDb = _IOrderHeader.Get(u => u.Id == OrderVM.orderHeader.Id);
+            if(OrderHeaderFromDb==null)
+            {
+                return NotFound();
+            }
+
+            OrderHeaderFromDb.PhoneNumber = OrderVM.orderHeader.PhoneNumber;
+            OrderHeaderFromDb.Name = OrderVM.orderHeader.Name;
+            OrderHeaderFromDb.Age = OrderVM.orderHeader.Age;
+            OrderHeaderFromDb.Email = OrderVM.orderHeader.Email;
+            OrderHeaderFromDb.State = OrderVM.orderHeader.State;
+            OrderHeaderFromDb.PostalCode = OrderVM.orderHeader.PostalCode;
+
+            if (!string.IsNullOrEmpty(OrderVM.orderHeader.Carrier))
+            {
+                OrderHeaderFromDb.Carrier = OrderVM.orderHeader.Carrier;
+            }
+
+            if (!string.IsNullOrEmpty(OrderVM.orderHeader.TrackingNumber))
+            {
+                OrderHeaderFromDb.TrackingNumber = OrderVM.orderHeader.TrackingNumber;
+            }
+
+            _IOrderHeader.Update(OrderHeaderFromDb);
+            _IOrderHeader.Save();
+           
+            return RedirectToAction(nameof(Details), new { orderId = OrderHeaderFromDb.Id });
         }
+
     }
+}
+      
+
+
+    
