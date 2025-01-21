@@ -226,7 +226,7 @@
                             <h4 class="d-flex justify-content-between align-items-center mb-3">
                                 <span class="text-primary">Order Summary</span>
                             </h4>
-                            <label class="btn btn-outline-primary form-control my-2">Order Status - XXOrderStatusXX</label>
+                            <label class="btn btn-outline-primary form-control my-2">Order Status - @Model.orderHeader.OrderStatus</label>
                             <ul class="list-group mb-3">
                                 @foreach(var item in Model.OrderDetail)
                                 {
@@ -266,9 +266,10 @@
                                 }
                                 @if (Model.orderHeader.OrderStatus == StaticDetails.StatusInProcess)
                                 {
-                                    <button type="submit" class="btn btn-primary form-control my-1">Ship Order</button>
+                                    <button type="submit" class="btn btn-primary form-control my-1" >Ship Order</button>
                                 }
-                                @if (Model.orderHeader.OrderStatus != StaticDetails.StatusRefunded && Model.orderHeader.OrderStatus != StaticDetails.StatusCancelled && Model.orderHeader.OrderStatus != StaticDetails.StatusShipped)
+                                @if (Model.orderHeader.OrderStatus != StaticDetails.StatusRefunded && Model.orderHeader.OrderStatus != StaticDetails.StatusCancelled &&
+                               Model.orderHeader.OrderStatus != StaticDetails.StatusShipped)
                                 {
                                     <button type="submit" class="btn btn-danger form-control my-1">Cancel Order</button>
                                 }
