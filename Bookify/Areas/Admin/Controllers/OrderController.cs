@@ -3,6 +3,7 @@ using BikeKinnus.Models.Models;
 using BikeKinnus.Models.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BikeKinnus.Areas.Admin.Controllers
 {
@@ -21,8 +22,18 @@ namespace BikeKinnus.Areas.Admin.Controllers
         }
         public IActionResult Index(string status)
         {
-            // Retrieve all order headers and order details
-            var orderHeaders = _IOrderHeader.GetAll(includeProperties: "AppUser").ToList();
+            IEnumerable<OrderHeader> orderHeaders;
+            if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
+            {
+                // Retrieve all order headers and order details
+                 orderHeaders = _IOrderHeader.GetAll(includeProperties: "AppUser").ToList();
+            }else
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+                orderHeaders = _IOrderHeader.GetAll(u => u.AppUserId == userId, includeProperties: "AppUser");
+            }
+          
             var orderDetails = _IOrderDetail.GetAll(includeProperties: "Product,OrderHeader").ToList();
             // Filter orders based on the status parameter
             if (!string.IsNullOrEmpty(status))
@@ -93,6 +104,7 @@ namespace BikeKinnus.Areas.Admin.Controllers
             OrderHeaderFromDb.PhoneNumber = OrderVM.orderHeader.PhoneNumber;
             OrderHeaderFromDb.Name = OrderVM.orderHeader.Name;
             OrderHeaderFromDb.Age = OrderVM.orderHeader.Age;
+            OrderHeaderFromDb.City = OrderVM.orderHeader.City;
             OrderHeaderFromDb.Email = OrderVM.orderHeader.Email;
             OrderHeaderFromDb.State = OrderVM.orderHeader.State;
             OrderHeaderFromDb.PostalCode = OrderVM.orderHeader.PostalCode;
