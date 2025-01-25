@@ -8,6 +8,7 @@ using System.Security.Claims;
 namespace BikeKinnus.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class OrderController : Controller
     {
         private readonly IOrderHeader _IOrderHeader;
@@ -20,6 +21,7 @@ namespace BikeKinnus.Areas.Admin.Controllers
             _IOrderDetail = orderDetail;
 
         }
+        [Authorize]
         public IActionResult Index(string status)
         {
             IEnumerable<OrderHeader> orderHeaders;
