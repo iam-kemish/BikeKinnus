@@ -10,13 +10,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace BikeKinnus.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles =StaticDetails.Role_Admin)]
+    [Authorize(Roles = StaticDetails.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _Db;
         private IProduct _IProduct;
         private ICategory _ICategory;
         private readonly IWebHostEnvironment _webHostEnvironment;
+
         public ProductController(ApplicationDbContext db, IProduct product, ICategory iCategory, IWebHostEnvironment webHostEnvironment)
         {
             _Db = db;
@@ -24,17 +25,15 @@ namespace BikeKinnus.Areas.Admin.Controllers
             _ICategory = iCategory;
             _webHostEnvironment = webHostEnvironment;
         }
+
         public IActionResult Index()
         {
-
             List<Product> products = _IProduct.GetAll(includeProperties: "Category").ToList();
-          
             return View(products);
         }
 
         public IActionResult CreateUpdate(int? id)
         {
-          
             ProductVM productVM = new()
             {
                 CategoryList = _ICategory.GetAll().Select(u => new SelectListItem
@@ -44,22 +43,27 @@ namespace BikeKinnus.Areas.Admin.Controllers
                 }),
                 Product = new Product()
             };
-            if(id== null || id== 0)
+
+            if (id == null || id == 0)
             {
-                //create
+                // Create
                 return View(productVM);
             }
             else
             {
-                //update
+                // Update
                 productVM.Product = _IProduct.Get(u => u.Id == id);
-                return View(productVM );
-
+                if (productVM.Product == null)
+                {
+                    TempData["error"] = "Product not found.";
+                    return RedirectToAction("Index");
+                }
+                return View(productVM);
             }
         }
-       [HttpPost]
-     
-        public IActionResult CreateUpdate(ProductVM productvm, IFormFile? file,int? id)
+
+        [HttpPost]
+        public IActionResult CreateUpdate(ProductVM productvm, IFormFile? file, int? id)
         {
             if (ModelState.IsValid)
             {
@@ -67,7 +71,6 @@ namespace BikeKinnus.Areas.Admin.Controllers
 
                 if (file != null)
                 {
-                    // Generate unique file name and save the image
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                     string filePath = Path.Combine(wwwRootPath, "images");
 
@@ -79,8 +82,6 @@ namespace BikeKinnus.Areas.Admin.Controllers
                             System.IO.File.Delete(oldImagePath);
                         }
                     }
-
-
 
                     if (!Directory.Exists(filePath))
                     {
@@ -96,28 +97,25 @@ namespace BikeKinnus.Areas.Admin.Controllers
 
                 if (id == 0 || id == null)
                 {
-                    // Create new product
                     _IProduct.Add(productvm.Product);
                     _IProduct.Save();
                     TempData["success"] = "Product created successfully.";
                 }
                 else
                 {
-                    // Update existing product
                     var existingProduct = _IProduct.Get(u => u.Id == id);
                     if (existingProduct != null)
                     {
-                      
                         existingProduct.Price = productvm.Product.Price;
                         existingProduct.Title = productvm.Product.Title;
-                       existingProduct.Brand=productvm.Product.Brand;
+                        existingProduct.Brand = productvm.Product.Brand;
                         existingProduct.Description = productvm.Product.Description;
                         existingProduct.Mileage = productvm.Product.Mileage;
                         existingProduct.CategoryId = productvm.Product.CategoryId;
                         existingProduct.EngineCapacity = productvm.Product.EngineCapacity;
                         existingProduct.ModelYear = productvm.Product.ModelYear;
-                        // Only update ImageUrl if a new image is uploaded
-                        if (existingProduct.ImageUrl != null)
+
+                        if (!string.IsNullOrEmpty(productvm.Product.ImageUrl))
                         {
                             existingProduct.ImageUrl = productvm.Product.ImageUrl;
                         }
@@ -129,6 +127,7 @@ namespace BikeKinnus.Areas.Admin.Controllers
                     else
                     {
                         TempData["error"] = "Product not found.";
+                        return RedirectToAction("Index");
                     }
                 }
 
@@ -136,53 +135,50 @@ namespace BikeKinnus.Areas.Admin.Controllers
             }
             else
             {
-                productvm.CategoryList = _IProduct.GetAll().Select(u => new SelectListItem
+                TempData["error"] = "Validation failed. Please correct the errors and try again.";
+                productvm.CategoryList = _ICategory.GetAll().Select(u => new SelectListItem
                 {
-                    Text = u.Title,
+                    Text = u.Name,
                     Value = u.Id.ToString()
-                }); ;
+                });
             }
 
-            // Return the same view with validation errors
             return View(productvm);
         }
-      
-    
 
-    public IActionResult Delete(int? id)
+        public IActionResult Delete(int? id)
         {
-            if (id == 0 || id == null)
+            if (id == null || id == 0)
             {
-                return NotFound();
+                TempData["error"] = "Invalid product ID.";
+                return RedirectToAction("Index");
             }
+
             Product? product = _IProduct.Get(u => u.Id == id);
             if (product == null)
             {
-                return NotFound();
+                TempData["error"] = "Product not found.";
+                return RedirectToAction("Index");
             }
+
             return View(product);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
             var productToDelete = _IProduct.Get(u => u.Id == id);
             if (productToDelete == null)
             {
-                return NotFound();
-            }
-            if (ModelState.IsValid)
-            {
-                _IProduct.Remove(productToDelete);
-                _IProduct.Save();
-                TempData["success"] = "Product deleted successfully.";
+                TempData["error"] = "Product not found.";
                 return RedirectToAction("Index");
             }
-            return View();
+
+            _IProduct.Remove(productToDelete);
+            _IProduct.Save();
+            TempData["success"] = "Product deleted successfully.";
+            return RedirectToAction("Index");
         }
-
-
-       
-
     }
 }

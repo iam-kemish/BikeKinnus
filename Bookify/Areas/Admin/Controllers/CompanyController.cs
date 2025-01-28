@@ -12,89 +12,118 @@ namespace BikeKinnus.Areas.Admin.Controllers
     {
         private readonly ApplicationDbContext _Db;
         private readonly ICompany _ICompany;
+
         public CompanyController(ApplicationDbContext db, ICompany company)
         {
-            _Db = db;   
+            _Db = db;
             _ICompany = company;
         }
+
         public IActionResult Index()
         {
-           List<Company> companies = _ICompany.GetAll().ToList();
+            List<Company> companies = _ICompany.GetAll().ToList();
             return View(companies);
         }
-       
+
         public IActionResult CreateUpdate(int? id)
         {
-            Company Company = new Company();
-           if(id== null)
+            Company company = new Company();
+
+            if (id == null)
             {
-                return View(Company);
-            }else
+                // Create mode
+                return View(company);
+            }
+            else
             {
-                Company = _ICompany.Get(u => u.Id == id);
-                return View(Company);
+                // Update mode
+                company = _ICompany.Get(u => u.Id == id);
+                if (company == null)
+                {
+                    TempData["error"] = "Company not found.";
+                    return NotFound();
+                }
+                return View(company);
             }
         }
+
         [HttpPost]
-        public IActionResult CreateUpdate(Company company, int? id) 
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateUpdate(Company company, int? id)
         {
-            if(id == null || id == 0)
+            if (!ModelState.IsValid)
             {
+                TempData["error"] = "Invalid data. Please check the form and try again.";
+                return View(company);
+            }
+
+            if (id == null || id == 0)
+            {
+                // Create new company
                 _ICompany.Add(company);
                 _ICompany.Save();
                 TempData["success"] = "Company created successfully.";
             }
-            var existingCompany = _ICompany.Get(u => u.Id == id);
-            if(existingCompany != null)
+            else
             {
-                existingCompany.State = company.State;
-                existingCompany.StreetAddress = company.StreetAddress;
-                existingCompany.PostalCode = company.PostalCode;
-                existingCompany.Name = company.Name;
-                existingCompany.City = company.City;
+                // Update existing company
+                var existingCompany = _ICompany.Get(u => u.Id == id);
+                if (existingCompany != null)
+                {
+                    existingCompany.State = company.State;
+                    existingCompany.StreetAddress = company.StreetAddress;
+                    existingCompany.PostalCode = company.PostalCode;
+                    existingCompany.Name = company.Name;
+                    existingCompany.City = company.City;
 
-                _ICompany.Update(existingCompany);
-                _ICompany.Save();
+                    _ICompany.Update(existingCompany);
+                    _ICompany.Save();
+                    TempData["success"] = "Company updated successfully.";
+                }
+                else
+                {
+                    TempData["error"] = "Company not found for update.";
+                    return NotFound();
+                }
             }
 
-
-            return (RedirectToAction("Index"));
+            return RedirectToAction("Index");
         }
-    public IActionResult Delete( int? id)
-    {
-           if(id==0 || id == null)
+
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
             {
+                TempData["error"] = "Invalid company ID.";
                 return NotFound();
             }
-           
-                Company company = _ICompany.Get(u => u.Id == id);
-                if (company != null)
-                {
-                    return View(company);
-                }
+
+            Company company = _ICompany.Get(u => u.Id == id);
+            if (company == null)
+            {
+                TempData["error"] = "Company not found.";
+                return NotFound();
+            }
+
             return View(company);
-          
-    }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var CompanyToDelete = _ICompany.Get(u => u.Id == id);
-            if(CompanyToDelete == null)
+            var companyToDelete = _ICompany.Get(u => u.Id == id);
+            if (companyToDelete == null)
             {
+                TempData["error"] = "Company not found.";
                 return NotFound();
             }
-            if (ModelState.IsValid)
-            {
-                _ICompany.Remove(CompanyToDelete);
-                _ICompany.Save();
-                return RedirectToAction("Index");
-            }
-            return View();
+
+            _ICompany.Remove(companyToDelete);
+            _ICompany.Save();
+            TempData["success"] = "Company deleted successfully.";
+
+            return RedirectToAction("Index");
         }
     }
-  
-
-   
-
 }

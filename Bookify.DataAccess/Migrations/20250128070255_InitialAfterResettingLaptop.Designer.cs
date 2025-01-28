@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BikeKinnus.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250105072213_CompanyTbleAddded")]
-    partial class CompanyTbleAddded
+    [Migration("20250128070255_InitialAfterResettingLaptop")]
+    partial class InitialAfterResettingLaptop
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

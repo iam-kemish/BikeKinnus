@@ -1,7 +1,6 @@
 ﻿using BikeKinnus.DataAccess.Repositary;
 using BikeKinnus.Models.Models;
 using BikeKinnus.Models.Models.ViewModels;
-using BikeKinnus.Repositary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -16,57 +15,86 @@ namespace BikeKinnus.Areas.Customer.Controllers
         private readonly IOrderDetail _IOrderDetail;
         private readonly IAppUser _IAppUser;
         private readonly IOrderHeader _IOrderHeader;
-     
-        public CartController(IBuyingCart buyingCart,IAppUser appUser, IOrderHeader orderHeader, IOrderDetail orderDetail)
+
+        public CartController(
+            IBuyingCart buyingCartRepository,
+            IAppUser appUserRepository,
+            IOrderHeader orderHeaderRepository,
+            IOrderDetail orderDetailRepository)
         {
-            _IBuyingCart = buyingCart;
-            _IOrderHeader = orderHeader;
-            _IAppUser = appUser;
-            _IOrderDetail = orderDetail;
+            _IBuyingCart = buyingCartRepository;
+            _IOrderHeader = orderHeaderRepository;
+            _IAppUser = appUserRepository;
+            _IOrderDetail = orderDetailRepository;
         }
-    
+
         public IActionResult Index()
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            BuyingCartVM resultedDatas = new BuyingCartVM()
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
             {
-                BuyingCarts = _IBuyingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Product,Product.Category").ToList(),
-                
-               OrderHeader = new()
-               {
-                   OrderTotal = _IBuyingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Product,Product.Category").Sum(s => s.Count * s.Product.Price)
-               }
-             
-           };
-            return View(resultedDatas);
+                TempData["error"] = "User not authenticated.";
+                return RedirectToAction("Index", "Home"); 
+            }
+
+            var carts = _IBuyingCart.GetAll(
+                u => u.ApplicationUserId == userId,
+                includeProperties: "Product,Product.Category"
+            ).ToList();
+
+            var cartViewModel = new BuyingCartVM
+            {
+                BuyingCarts = carts,
+                OrderHeader = new OrderHeader
+                {
+                    OrderTotal = carts.Sum(c => c.Count * (c.Product?.Price ?? 0))
+                }
+            };
+
+            return View(cartViewModel);
         }
 
         public IActionResult Summary()
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            BuyingCartVM buyingCartVM = new BuyingCartVM()
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
             {
-                BuyingCarts = _IBuyingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Product,Product.Category").ToList(),
+                TempData["error"] = "User not authenticated.";
+                return RedirectToAction("Index", "Home");
+            }
 
-                OrderHeader = new()
+            var appUser = _IAppUser.Get(u => u.Id == userId);
+            if (appUser == null)
+            {
+                TempData["error"] = "User not found.";
+                return RedirectToAction("Index");
+            }
+
+            var carts = _IBuyingCart.GetAll(
+                u => u.ApplicationUserId == userId,
+                includeProperties: "Product,Product.Category"
+            ).ToList();
+
+            var cartViewModel = new BuyingCartVM
+            {
+                BuyingCarts = carts,
+                OrderHeader = new OrderHeader
                 {
-                    OrderTotal = _IBuyingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Product,Product.Category").Sum(s => s.Count * s.Product.Price)
+                    OrderTotal = carts.Sum(c => c.Count * (c.Product?.Price ?? 0)),
+                    Name = appUser.Name,
+                    PhoneNumber = appUser.PhoneNumber,
+                    Email = appUser.Email,
+                    City = appUser.City,
+                    State = appUser.State,
+                    PostalCode = appUser.PostalCode,
+                    Age = appUser.Age,
+                    AppUser = appUser
                 }
-
             };
 
-            buyingCartVM.OrderHeader.AppUser = _IAppUser.Get(u => u.Id == userId);
-            buyingCartVM.OrderHeader.Name = buyingCartVM.OrderHeader.AppUser.Name;
-            buyingCartVM.OrderHeader.PhoneNumber = buyingCartVM.OrderHeader.AppUser.PhoneNumber;
-            buyingCartVM.OrderHeader.Age = buyingCartVM.OrderHeader.AppUser.Age;
-            buyingCartVM.OrderHeader.City = buyingCartVM.OrderHeader.AppUser.City;
-            buyingCartVM.OrderHeader.Email = buyingCartVM.OrderHeader.AppUser.Email;
-            buyingCartVM.OrderHeader.State = buyingCartVM.OrderHeader.AppUser.State;
-            buyingCartVM.OrderHeader.PostalCode = buyingCartVM.OrderHeader.AppUser.PostalCode;
-
-            return View(buyingCartVM);
+            return View(cartViewModel);
         }
 
         [HttpPost]
@@ -117,6 +145,7 @@ namespace BikeKinnus.Areas.Customer.Controllers
 
             _IOrderHeader.Add(buyingCartVM.OrderHeader);
             _IOrderHeader.Save();
+            TempData["success"] = "Order Header added successfully";
 
             foreach (var item in buyingCartVM.BuyingCarts)
             {
@@ -124,52 +153,90 @@ namespace BikeKinnus.Areas.Customer.Controllers
                 {
                     ProductId = item.ProductId,
                     OrderHeaderId = buyingCartVM.OrderHeader.Id,
-                    Price = item.Product.Price, 
+                    Price = item.Product.Price,
                     Count = item.Count
                 };
                 _IOrderDetail.Add(orderDetails);
             }
             _IOrderDetail.Save();
+            TempData["success"] = "Order detail added successfully";
+            // Clear the cart after order is placed
+            foreach (var item in buyingCartVM.BuyingCarts)
+            {
+              
+                if (item != null)
+                {
+                    _IBuyingCart.Remove(item);
+                }
+            }
+            _IBuyingCart.Save();
+
 
             return RedirectToAction(nameof(OrderConfirmation), new { id = buyingCartVM.OrderHeader.Id });
         }
-
 
         public IActionResult OrderConfirmation(int id)
         {
             return View(id);
         }
+
         public IActionResult Increment(int cartId)
         {
-            var cartFromDb = _IBuyingCart.Get(u => u.Id == cartId);
-            if(cartFromDb.Count > 0 && cartFromDb.Count < 3)
+            var cart = _IBuyingCart.Get(c => c.Id == cartId);
+
+            if (cart == null)
             {
-                cartFromDb.Count += 1;
+                TempData["error"] = "Cart item not found.";
+                return RedirectToAction(nameof(Index));
             }
-            _IBuyingCart.Update(cartFromDb);
-            _IBuyingCart.Save();
-            return RedirectToAction("Index");
+
+            if (cart.Count < 3)
+            {
+                cart.Count++;
+                _IBuyingCart.Update(cart);
+                _IBuyingCart.Save();
+            TempData["success"] = "Item count increased.";
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Decrement(int cartId)
         {
-            var cartFromDb = _IBuyingCart.Get(u => u.Id == cartId);
-            if (cartFromDb.Count > 1 && cartFromDb.Count <= 3)
+            var cart = _IBuyingCart.Get(c => c.Id == cartId);
+
+            if (cart == null)
             {
-                cartFromDb.Count -= 1;
+                TempData["error"] = "Cart item not found.";
+                return RedirectToAction(nameof(Index));
             }
-            _IBuyingCart.Update(cartFromDb);
-            _IBuyingCart.Save();
+
+            if (cart.Count > 1)
+            {
+                cart.Count--;
+                _IBuyingCart.Update(cart);
+                _IBuyingCart.Save();
+            TempData["success"] = "Item count decreased.";
+            }
+
             return RedirectToAction("Index");
         }
+
         public IActionResult Remove(int cartId)
         {
-            var cartFromDb = _IBuyingCart.Get(u => u.Id == cartId);
-          
-            _IBuyingCart.Remove(cartFromDb);
+            var cart = _IBuyingCart.Get(c => c.Id == cartId);
+
+            if (cart == null)
+            {
+                TempData["error"] = "Cart item not found.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            _IBuyingCart.Remove(cart);
             _IBuyingCart.Save();
-            return RedirectToAction("Index");
+
+            TempData["success"] = "Item removed from the cart.";
+            return RedirectToAction(nameof(Index));
         }
     }
-
 }

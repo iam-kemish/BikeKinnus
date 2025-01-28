@@ -7,9 +7,10 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BikeKinnus.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="//cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css" />
+   
+
 </head>
 <body>
     <header>
@@ -41,16 +42,13 @@
                                     <a class="dropdown-item text-dark text-center" asp-area="Admin" asp-controller="Company" asp-action="Index">Company</a>
                                 </div>
                             </div>
-
                         }
                         <!-- Cart Icon -->
                         <li class="nav-item">
                             <a class="nav-link text-dark position-relative" asp-area="Customer" asp-controller="Cart" asp-action="Index">
                                 <i class="bi bi-cart"></i> My Cart
-                                
                             </a>
                         </li>
-                       
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -60,7 +58,24 @@
 
     <div class="container">
         <main role="main" class="pb-3">
-            <partial name="_Notification" />
+            @{
+                var error = TempData["error"]?.ToString();
+                var success = TempData["success"]?.ToString();
+            }
+            @if (!string.IsNullOrWhiteSpace(@success))
+            {
+                <div class="alert alert-success">
+                    <b>Success : </b>@success
+                    <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="close"></button>
+                </div>
+            }
+            else if (!string.IsNullOrWhiteSpace(@error))
+            {
+                <div class="alert alert-danger">
+                    <b>Error : </b>@error
+                    <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="close"></button>
+                </div>
+            }
             @RenderBody()
         </main>
     </div>
@@ -70,13 +85,16 @@
             &copy; 2024 - BikeKinnus - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="//cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js" asp-append-version="true"></script>
+    
+    
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
