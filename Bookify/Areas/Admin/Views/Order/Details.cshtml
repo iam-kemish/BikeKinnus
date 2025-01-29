@@ -124,31 +124,7 @@
                                     <input value="@Model.orderHeader.OrderDate.ToShortDateString()"  type="text" class="form-control" />
                                 </div>
                             </div>
-                            <div class="row my-1">
-                                <div class="col-3">Carrier</div>
-                                <div class="col-9">
-                                    @if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
-                                    {
-                                   
-                                        <input asp-for="orderHeader.Carrier" type="text" class="form-control" />
-                                    }else
-                                    {
-                                        <input asp-for="orderHeader.Carrier" type="text" class="form-control" readonly />
-                                    }
-                                </div>
-                            </div>
-                            <div class="row my-1">
-                                <div class="col-3">Tracking</div>
-                                <div class="col-9">
-                                    @if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
-                                    {
-                                        <input asp-for="orderHeader.TrackingNumber" type="text" class="form-control" />
-                                    }else
-                                    {
-                                        <input asp-for="orderHeader.TrackingNumber" type="text" class="form-control"  readonly/>
-                                    }
-                                </div>
-                            </div>
+                            
                             <div class="row my-1">
                                 <div class="col-3">Shipping Date</div>
                                 <div class="col-9">
@@ -162,50 +138,7 @@
                                 </div>
                             </div>
                            
-                                <div class="row my-1">
-                                    <div class="col-3">Session ID</div>
-                                    <div class="col-9">
-                                    @if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
-                                    {
-                                        <input asp-for="orderHeader.SessionId"  type="text" class="form-control" />
-
-                                    }else
-                                    {
-                                        <input asp-for="orderHeader.SessionId" type="text" class="form-control"  readonly/>
-                                    }
-                                </div>
-                                </div>
-                                <div class="row my-1">
-                                    <div class="col-3">Payment Intent ID</div>
-                                    <div class="col-9">
-                                    @if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
-                                    {
-                                        <input asp-for="orderHeader.PaymentIntentId"  type="text" class="form-control" />
-                                    }else
-                                    {
-                                        <input asp-for="orderHeader.PaymentIntentId" type="text" class="form-control" readonly/>
-                                    }
-                                </div>
-                                </div>
-                            
-                            <div class="row my-1">
-
-                                @if (Model.orderHeader.SessionId == null)
-                                {
-                                    <div class="col-3">Payment Due Date</div>
-                                    <div class="col-9">
-                                        <input value="@Model.orderHeader.PaymentDueDate.ToShortDateString()" readonly type="text" class="form-control" />
-                                    </div>
-
-                                }
-                                else
-                                {
-                                    <div class="col-3">Payment Date</div>
-                                    <div class="col-9">
-                                        <input value="@Model.orderHeader.PaymentDate.ToShortDateString()" readonly type="text" class="form-control" />
-                                    </div>
-                                }
-                            </div>
+                        
                             <div class="row my-1">
                                 <div class="col-3">Payment Status</div>
                                 <div class="col-9">
@@ -271,7 +204,7 @@
                                 @if (Model.orderHeader.OrderStatus != StaticDetails.StatusRefunded && Model.orderHeader.OrderStatus != StaticDetails.StatusCancelled &&
                                Model.orderHeader.OrderStatus != StaticDetails.StatusShipped)
                                 {
-                                    <button type="submit" class="btn btn-danger form-control my-1">Cancel Order</button>
+                                    <button type="submit" asp-action="CancelOrder" class="btn btn-danger form-control my-1">Cancel Order</button>
                                 }
                             }
                         </div>

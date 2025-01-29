@@ -118,15 +118,9 @@ namespace BikeKinnus.Areas.Admin.Controllers
             OrderHeaderFromDb.State = OrderVM.orderHeader.State;
             OrderHeaderFromDb.PostalCode = OrderVM.orderHeader.PostalCode;
 
-            if (!string.IsNullOrEmpty(OrderVM.orderHeader.Carrier))
-            {
-                OrderHeaderFromDb.Carrier = OrderVM.orderHeader.Carrier;
-            }
+          
 
-            if (!string.IsNullOrEmpty(OrderVM.orderHeader.TrackingNumber))
-            {
-                OrderHeaderFromDb.TrackingNumber = OrderVM.orderHeader.TrackingNumber;
-            }
+           
 
             _IOrderHeader.Update(OrderHeaderFromDb);
             _IOrderHeader.Save();
@@ -144,6 +138,22 @@ namespace BikeKinnus.Areas.Admin.Controllers
             return RedirectToAction(nameof(Details), new { orderId = OrderVM.orderHeader.Id});
 
 
+        }
+        [HttpPost]
+        [Authorize(Roles = StaticDetails.Role_Admin + "," + StaticDetails.Role_Employee)]
+        public IActionResult CancelOrder()
+        {
+            OrderHeader orderHeader = _IOrderHeader.Get(u => u.Id == OrderVM.orderHeader.Id);
+            if(orderHeader.OrderStatus == StaticDetails.PaymentStatusApproved)
+            {
+                _IOrderHeader.UpdateStatus(orderHeader.Id, StaticDetails.StatusCancelled, StaticDetails.StatusRefunded);
+            }else
+            {
+                _IOrderHeader.UpdateStatus(orderHeader.Id, StaticDetails.StatusCancelled, StaticDetails.StatusCancelled);
+            }
+            _IOrderHeader.Save();
+            TempData["success"] = "Your order has been succcessfully cancelled.";
+            return RedirectToAction(nameof(Details), new {orderId= OrderVM.orderHeader.Id});
         }
 
     }

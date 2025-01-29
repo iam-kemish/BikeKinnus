@@ -34,18 +34,6 @@ namespace BikeKinnus.DataAccess.RepositaryClasses
             }
         }
 
-        public void UpdateStripePaymentID(int id, string sessionId, string paymentIntentId)
-        {
-            var orderFromDb = _Db.OrderHeaders.FirstOrDefault(u => u.Id == id);
-            if (!string.IsNullOrEmpty(sessionId))
-            {
-                orderFromDb.SessionId = sessionId;
-            }
-            if (!string.IsNullOrEmpty(paymentIntentId))
-            {
-                orderFromDb.PaymentIntentId = paymentIntentId;
-                orderFromDb.PaymentDate = DateTime.Now;
-            }
-        }
+     
     }
 }
