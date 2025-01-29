@@ -8,6 +8,8 @@ namespace BikeKinnus.Models.Models.ViewModels
         public OrderHeader? orderHeader { get; set; }
         public IEnumerable<OrderDetails>? OrderDetail { get; set; }
 
+        public PaymentSummary? PaymentSummary { get; set; }
+
       
     }
 }

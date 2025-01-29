@@ -118,9 +118,9 @@ namespace BikeKinnus.Areas.Admin.Controllers
             OrderHeaderFromDb.State = OrderVM.orderHeader.State;
             OrderHeaderFromDb.PostalCode = OrderVM.orderHeader.PostalCode;
 
-          
 
-           
+
+
 
             _IOrderHeader.Update(OrderHeaderFromDb);
             _IOrderHeader.Save();
@@ -135,7 +135,7 @@ namespace BikeKinnus.Areas.Admin.Controllers
             _IOrderHeader.UpdateStatus(OrderVM.orderHeader.Id, StaticDetails.StatusInProcess);
             _IOrderHeader.Save();
             TempData["success"] = "Your order status is now on process.";
-            return RedirectToAction(nameof(Details), new { orderId = OrderVM.orderHeader.Id});
+            return RedirectToAction(nameof(Details), new { orderId = OrderVM.orderHeader.Id });
 
 
         }
@@ -144,17 +144,34 @@ namespace BikeKinnus.Areas.Admin.Controllers
         public IActionResult CancelOrder()
         {
             OrderHeader orderHeader = _IOrderHeader.Get(u => u.Id == OrderVM.orderHeader.Id);
-            if(orderHeader.OrderStatus == StaticDetails.PaymentStatusApproved)
+            if (orderHeader.OrderStatus == StaticDetails.PaymentStatusApproved)
             {
                 _IOrderHeader.UpdateStatus(orderHeader.Id, StaticDetails.StatusCancelled, StaticDetails.StatusRefunded);
-            }else
+            }
+            else
             {
                 _IOrderHeader.UpdateStatus(orderHeader.Id, StaticDetails.StatusCancelled, StaticDetails.StatusCancelled);
             }
             _IOrderHeader.Save();
             TempData["success"] = "Your order has been succcessfully cancelled.";
-            return RedirectToAction(nameof(Details), new {orderId= OrderVM.orderHeader.Id});
+            return RedirectToAction(nameof(Details), new { orderId = OrderVM.orderHeader.Id });
         }
+        [HttpPost]
+        [Authorize(Roles = StaticDetails.Role_Admin)]
+        public IActionResult ShipPayment()
+        {
+            OrderHeader orderHeader = _IOrderHeader.Get(u => u.Id == OrderVM.orderHeader.Id);
 
+
+            _IOrderHeader.UpdateStatus(orderHeader.Id, StaticDetails.StatusShipped, StaticDetails.PaymentStatusDelayedPayment);
+            _IOrderHeader.Save();
+            TempData["success"] = "Order has been shipped.";
+            return RedirectToAction(nameof(Details), new { orderId = OrderVM.orderHeader.Id });
+
+        }
+        //public IActionResult PayNow()
+        //{
+
+        //}
     }
 }

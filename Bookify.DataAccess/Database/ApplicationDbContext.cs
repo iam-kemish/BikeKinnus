@@ -17,6 +17,7 @@ namespace BikeKinnus.Database
         public DbSet<BuyingCart> BuyingCarts { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }   
         public DbSet<OrderHeader> OrderHeaders { get; set; }    
+        public DbSet<PaymentSummary> PaymentSummaries { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

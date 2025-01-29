@@ -4,6 +4,7 @@ using BikeKinnus.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BikeKinnus.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250129075639_PaymentSummaryModelAdded")]
+    partial class PaymentSummaryModelAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -270,28 +273,6 @@ namespace BikeKinnus.DataAccess.Migrations
                     b.HasIndex("AppUserId");
 
                     b.ToTable("OrderHeaders");
-                });
-
-            modelBuilder.Entity("BikeKinnus.Models.Models.PaymentSummary", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("FinalStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OrderHeaderId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderHeaderId");
-
-                    b.ToTable("PaymentSummaries");
                 });
 
             modelBuilder.Entity("BikeKinnus.Models.Models.Product", b =>
@@ -752,17 +733,6 @@ namespace BikeKinnus.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("AppUser");
-                });
-
-            modelBuilder.Entity("BikeKinnus.Models.Models.PaymentSummary", b =>
-                {
-                    b.HasOne("BikeKinnus.Models.Models.OrderHeader", "OrderHeader")
-                        .WithMany()
-                        .HasForeignKey("OrderHeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("OrderHeader");
                 });
 
             modelBuilder.Entity("BikeKinnus.Models.Models.Product", b =>

@@ -189,7 +189,17 @@
                             </ul>
                             @if (Model.orderHeader.PaymentStatus == StaticDetails.PaymentStatusDelayedPayment && Model.orderHeader.OrderStatus == StaticDetails.StatusShipped)
                             {
-                                <button type="submit" class="btn btn-success form-control my-1">Pay Now</button>
+                                @if (User.IsInRole(StaticDetails.Role_Admin))
+                                {
+                                    <button class="btn btn-danger form-control my-1" disabled>processed for payment</button> <button class="btn btn-danger form-control my-1" disabled>processed for payment</button>
+                                   
+                                }else {
+                                    <button type="submit" class="btn btn-success form-control my-1">
+                                        Pay Now
+                                    </button>
+                                }
+
+
                             }
                             @if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
                             {
@@ -199,7 +209,7 @@
                                 }
                                 @if (Model.orderHeader.OrderStatus == StaticDetails.StatusInProcess)
                                 {
-                                    <button type="submit" class="btn btn-primary form-control my-1" >Ship Order</button>
+                                    <button type="submit" asp-action="ShipPayment" class="btn btn-primary form-control my-1">Ship Order</button>
                                 }
                                 @if (Model.orderHeader.OrderStatus != StaticDetails.StatusRefunded && Model.orderHeader.OrderStatus != StaticDetails.StatusCancelled &&
                                Model.orderHeader.OrderStatus != StaticDetails.StatusShipped)

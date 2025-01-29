@@ -14,6 +14,11 @@
         public const string StatusCancelled = "Cancelled";
         public const string StatusRefunded = "Refunded";
 
+
+        public const string SummaryStatusForCostumer = "Costumer's payment was accoplished via digital wallet.";
+        public const string SummaryStatusForEmployee = "Employee payment was hold and reviewed and will be received.";
+        public const string SummaryStatusForCompany = "The company payment was handled via swift.";
+        
         public const string PaymentStatusDelayedPayment = "Pending";
        
         public const string PaymentStatusApproved = "Approved";
