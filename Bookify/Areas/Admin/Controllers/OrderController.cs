@@ -134,5 +134,17 @@ namespace BikeKinnus.Areas.Admin.Controllers
             TempData["success"] = "Order details updated successfully.";
             return RedirectToAction(nameof(Details), new { orderId = OrderHeaderFromDb.Id });
         }
+        [HttpPost]
+        [Authorize(Roles = StaticDetails.Role_Admin + "," + StaticDetails.Role_Employee)]
+        public IActionResult StartProcessing()
+        {
+            _IOrderHeader.UpdateStatus(OrderVM.orderHeader.Id, StaticDetails.StatusInProcess);
+            _IOrderHeader.Save();
+            TempData["success"] = "Your order status is now on process.";
+            return RedirectToAction(nameof(Details), new { orderId = OrderVM.orderHeader.Id});
+
+
+        }
+
     }
 }

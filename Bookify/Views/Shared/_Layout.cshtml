@@ -62,22 +62,25 @@
                 var error = TempData["error"]?.ToString();
                 var success = TempData["success"]?.ToString();
             }
+
             @if (!string.IsNullOrWhiteSpace(@success))
             {
-                <div class="alert alert-success">
+                <div class="alert alert-success custom-alert">
                     <b>Success : </b>@success
-                    <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="close"></button>
+                    <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             }
             else if (!string.IsNullOrWhiteSpace(@error))
             {
-                <div class="alert alert-danger">
+                <div class="alert alert-danger custom-alert">
                     <b>Error : </b>@error
-                    <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="close"></button>
+                    <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             }
+
             @RenderBody()
         </main>
+
     </div>
 
     <footer class="border-top footer text-muted">
@@ -98,3 +101,14 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+<style>
+    .custom-alert {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 50%; /* Half of the screen */
+        max-width: 400px; /* Limit width */
+        z-index: 1050; /* Ensure it appears above other content */
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Optional shadow */
+    }
+</style>
