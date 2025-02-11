@@ -44,6 +44,7 @@ builder.Services.AddScoped<IBuyingCart, BuyingCartClass>();
 builder.Services.AddScoped<IAppUser, AppUserClass>();
 builder.Services.AddScoped<IOrderHeader, OrderHeaderClass>();
 builder.Services.AddScoped<IOrderDetail, OrderDetailsClass>();
+builder.Services.AddScoped<IPayment, PaymentClass>();
 builder.Services.AddRazorPages();
 var app = builder.Build();
 

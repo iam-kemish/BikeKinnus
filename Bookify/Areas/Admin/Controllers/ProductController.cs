@@ -166,7 +166,7 @@ namespace BikeKinnus.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public IActionResult Delete(int id)
         {
             var productToDelete = _IProduct.Get(u => u.Id == id);
             if (productToDelete == null)

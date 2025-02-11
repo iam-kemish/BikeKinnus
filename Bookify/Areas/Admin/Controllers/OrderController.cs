@@ -3,6 +3,7 @@ using BikeKinnus.Models.Models;
 using BikeKinnus.Models.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Security.Claims;
 
 namespace BikeKinnus.Areas.Admin.Controllers
@@ -13,13 +14,15 @@ namespace BikeKinnus.Areas.Admin.Controllers
     {
         private readonly IOrderHeader _IOrderHeader;
         private readonly IOrderDetail _IOrderDetail;
+        private readonly IPayment _IPayment;
         [BindProperty]
         public OrderVM OrderVM { get; set; }
 
-        public OrderController(IOrderDetail orderDetail, IOrderHeader orderHeader)
+        public OrderController(IOrderDetail orderDetail, IOrderHeader orderHeader, IPayment payment)
         {
             _IOrderHeader = orderHeader;
             _IOrderDetail = orderDetail;
+            _IPayment = payment;
         }
 
         [Authorize]
@@ -84,7 +87,7 @@ namespace BikeKinnus.Areas.Admin.Controllers
 
         public IActionResult Details(int orderId)
         {
-            OrderVM = new()
+            OrderVM = new OrderVM
             {
                 orderHeader = _IOrderHeader.Get(u => u.Id == orderId, includeProperties: "AppUser"),
                 OrderDetail = _IOrderDetail.GetAll(u => u.OrderHeaderId == orderId, includeProperties: "Product,OrderHeader")
@@ -117,9 +120,6 @@ namespace BikeKinnus.Areas.Admin.Controllers
             OrderHeaderFromDb.Email = OrderVM.orderHeader.Email;
             OrderHeaderFromDb.State = OrderVM.orderHeader.State;
             OrderHeaderFromDb.PostalCode = OrderVM.orderHeader.PostalCode;
-
-
-
 
 
             _IOrderHeader.Update(OrderHeaderFromDb);
@@ -169,9 +169,23 @@ namespace BikeKinnus.Areas.Admin.Controllers
             return RedirectToAction(nameof(Details), new { orderId = OrderVM.orderHeader.Id });
 
         }
-        //public IActionResult PayNow()
-        //{
 
-        //}
+       
+        [HttpPost]
+        [ActionName("Details")]
+        public IActionResult DetailsPost(int orderId)
+        {
+
+            OrderVM.orderHeader = _IOrderHeader.Get(u => u.Id == orderId, includeProperties: "AppUser");
+            OrderVM.OrderDetail = _IOrderDetail.GetAll(u => u.OrderHeaderId == orderId, includeProperties: "Product,OrderHeader");
+
+            return RedirectToAction(nameof(PayNow), new { orderId = OrderVM.orderHeader.Id});
+        }
+
+    public IActionResult PayNow()
+        {
+            return View();
+        }
+
     }
 }
